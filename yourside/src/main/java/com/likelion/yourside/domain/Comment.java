@@ -9,16 +9,16 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-public class Post extends BaseEntity {
+public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // PK
-    private String title; // 제목
     private String content; // 내용
-    @Column(name = "bookmark_count")
-    private int bookmarkCount; // 북마크 수
-    private String image; // 결과지 이미지 (S3 Image url)
+    private int likes; // 좋아요 수
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 }
