@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter @Setter
 @AllArgsConstructor
-public class UserLoginDto {
+public class UserLoginRequestDto {
     // 유효성 검사가 필요하다면, Annotation 추가
     private String username;
     private String password;

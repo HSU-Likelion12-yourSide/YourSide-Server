@@ -1,13 +1,12 @@
 package com.likelion.yourside.user.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 @AllArgsConstructor
-public class UserSignUpDto {
+public class UserSignUpRequestDto {
     // 유효성 검사 추가 해야하면 넣기.
     private String username;
     private String password;
