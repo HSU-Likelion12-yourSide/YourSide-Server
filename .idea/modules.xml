@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/yourside.iml" filepath="$PROJECT_DIR$/.idea/modules/yourside.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/yourside.main.iml" filepath="$PROJECT_DIR$/.idea/modules/yourside.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/yourside.test.iml" filepath="$PROJECT_DIR$/.idea/modules/yourside.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/YourSide-Server.iml" filepath="$PROJECT_DIR$/.idea/YourSide-Server.iml" />
     </modules>
   </component>
 </project>
