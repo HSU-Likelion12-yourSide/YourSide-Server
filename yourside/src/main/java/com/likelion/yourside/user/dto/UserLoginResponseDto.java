@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class UserLoginResponseDto {
-    private Long id;
+    private Long user_id;
 }

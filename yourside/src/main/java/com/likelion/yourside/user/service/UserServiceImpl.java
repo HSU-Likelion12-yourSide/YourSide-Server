@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService{
         // 3. 로그인 성공 Return
         // 3.1 data
         UserLoginResponseDto data = UserLoginResponseDto.builder()
-                .id(user.getId())
+                .user_id(user.getId())
                 .build();
         // 3.2 response body
         CustomAPIResponse<UserLoginResponseDto> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "로그인 성공 하였습니다.");
