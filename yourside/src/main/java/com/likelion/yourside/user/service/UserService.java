@@ -8,5 +8,6 @@ import org.springframework.http.ResponseEntity;
 public interface UserService {
     ResponseEntity<CustomAPIResponse<?>> signUp(UserSignUpRequestDto signUpDto); // 회원가입
     ResponseEntity<CustomAPIResponse<?>> login(UserLoginRequestDto loginDto); // 로그인
+    ResponseEntity<CustomAPIResponse<?>> checkDuplicationUsername(String username); // username 중복 확인
 
 }
