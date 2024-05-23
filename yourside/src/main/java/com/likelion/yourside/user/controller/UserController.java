@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
+    // 유효성 검사 필요 시 @Valid 넣기
     @PostMapping("/signup")
-    public ResponseEntity<CustomAPIResponse<?>> signUp(@RequestBody @Valid UserSignUpDto userSignUpDto) {
+    public ResponseEntity<CustomAPIResponse<?>> signUp(@RequestBody UserSignUpDto userSignUpDto) {
         return userService.signUp(userSignUpDto);
     }
 
