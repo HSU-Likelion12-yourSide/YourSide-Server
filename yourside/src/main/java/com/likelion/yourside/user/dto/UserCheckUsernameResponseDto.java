@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @Builder
-public class UserLoginResponseDto {
-    private Long user_id;
+public class UserCheckUsernameResponseDto {
+    private String username;
 }

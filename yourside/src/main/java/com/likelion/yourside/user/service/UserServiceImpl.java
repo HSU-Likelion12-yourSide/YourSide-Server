@@ -1,9 +1,7 @@
 package com.likelion.yourside.user.service;
 
 import com.likelion.yourside.domain.User;
-import com.likelion.yourside.user.dto.UserLoginRequestDto;
-import com.likelion.yourside.user.dto.UserLoginResponseDto;
-import com.likelion.yourside.user.dto.UserSignUpRequestDto;
+import com.likelion.yourside.user.dto.*;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
 import lombok.RequiredArgsConstructor;
@@ -80,7 +78,7 @@ public class UserServiceImpl implements UserService{
         // 3. 로그인 성공 Return
         // 3.1 data
         UserLoginResponseDto data = UserLoginResponseDto.builder()
-                .id(user.getId())
+                .user_id(user.getId())
                 .build();
         // 3.2 response body
         CustomAPIResponse<UserLoginResponseDto> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "로그인 성공 하였습니다.");
@@ -128,9 +126,11 @@ public class UserServiceImpl implements UserService{
         // 2. 존재한다면 성공 리턴
         User user = foundUser.get();
         // 2-1. data
-        String data = user.getUsername();
+        UserCheckUsernameResponseDto data = UserCheckUsernameResponseDto.builder()
+                .username(user.getUsername())
+                .build();
         // 2-2. responseBody
-        CustomAPIResponse<String> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "아이디 찾기 완료되었습니다.");
+        CustomAPIResponse<UserCheckUsernameResponseDto> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "아이디 찾기 완료되었습니다.");
         // 2-3. ResponseEntity
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -152,9 +152,11 @@ public class UserServiceImpl implements UserService{
         // 2. 존재하면 password 리턴
         User user = foundUser.get();
         // 2-1. data
-        String data = user.getPassword();
+        UserCheckPasswordResponseDto data = UserCheckPasswordResponseDto.builder()
+                .password(user.getPassword())
+                .build();
         // 2-2. responseBody
-        CustomAPIResponse<String> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "비밀번호 조회 완료되었습니다.");
+        CustomAPIResponse<UserCheckPasswordResponseDto> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "비밀번호 조회 완료되었습니다.");
         // 2-3. ResponseEntity
         return ResponseEntity
                 .status(HttpStatus.OK)
