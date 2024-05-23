@@ -112,7 +112,6 @@ public class UserServiceImpl implements UserService{
                 .status(HttpStatus.OK)
                 .body(responseBody);
     }
-
     @Override
     public ResponseEntity<CustomAPIResponse<?>> checkUsername(String name, String email) {
         // 1. name, email로 조회 시 존재하는지 확인
@@ -132,6 +131,30 @@ public class UserServiceImpl implements UserService{
         String data = user.getUsername();
         // 2-2. responseBody
         CustomAPIResponse<String> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "아이디 찾기 완료되었습니다.");
+        // 2-3. ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
+    }
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> checkPassword(String name, String email, String username) {
+        // 1. password 존재 여부 확인
+        Optional<User> foundUser = userRepository.findByNameAndEmailAndUsername(name, email, username);
+        if (foundUser.isEmpty()) {
+            // 1-1. data
+            // 1-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), "비밀번호가 존재하지 않습니다.");
+            // 1-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(responseBody);
+        }
+        // 2. 존재하면 password 리턴
+        User user = foundUser.get();
+        // 2-1. data
+        String data = user.getPassword();
+        // 2-2. responseBody
+        CustomAPIResponse<String> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "비밀번호 조회 완료되었습니다.");
         // 2-3. ResponseEntity
         return ResponseEntity
                 .status(HttpStatus.OK)
