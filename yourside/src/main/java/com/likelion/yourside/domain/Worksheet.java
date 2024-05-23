@@ -27,7 +27,6 @@ public class Worksheet extends BaseEntity {
     private boolean overtimePay; // 연장 근로 수당 발생 여부
     @Column(name="holiday_pay")
     private boolean holidayPay; // 휴일 근로 수당 발생 여부
-    private String image; // 결과지 이미지 (S3 Image URL)
     private boolean isOpen; // 결과지 공개 여부
     @ManyToOne
     @JoinColumn(name = "user_id")
