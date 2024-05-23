@@ -31,4 +31,6 @@ public class Worksheet extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void changeIsOpen() {isOpen = true;}
 }

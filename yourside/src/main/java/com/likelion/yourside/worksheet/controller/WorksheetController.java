@@ -19,7 +19,7 @@ public class WorksheetController {
     }
 
     @PutMapping("/{worksheet_id}")
-    public ResponseEntity<CustomAPIResponse<?>> setExpert(@PathVariable("worksheet_id") Long worksheetId) {
-        return worksheetService.setExpert(worksheetId);
+    public ResponseEntity<CustomAPIResponse<?>> share(@PathVariable("worksheet_id") Long worksheetId) {
+        return worksheetService.share(worksheetId);
     }
 }

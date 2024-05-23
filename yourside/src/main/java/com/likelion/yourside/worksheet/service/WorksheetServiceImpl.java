@@ -44,6 +44,7 @@ public class WorksheetServiceImpl implements WorksheetService{
                 .nightPay(worksheetRegisterRequestDto.isNight_pay())
                 .overtimePay(worksheetRegisterRequestDto.isOvertime_pay())
                 .holidayPay(worksheetRegisterRequestDto.isHoliday_pay())
+                .isOpen(false)
                 .user(user)
                 .build();
         worksheetRepository.save(worksheet);
@@ -57,6 +58,30 @@ public class WorksheetServiceImpl implements WorksheetService{
         // 2-3. ResponseEntity
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(responseBody);
+    }
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> share(Long worksheetId) {
+        // 1. worksheet 있는지 조회
+        Optional<Worksheet> foundWorksheet = worksheetRepository.findById(worksheetId);
+        if (foundWorksheet.isEmpty()) {
+            // 1-1. data
+            // 1-2. response body
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "일치하는 결과 근로지가 없습니다.");
+            // 1-3. Response Entity
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(responseBody);
+        }
+        // 2. isOpen 변경
+        Worksheet worksheet = foundWorksheet.get();
+        worksheet.changeIsOpen();
+        // 2-1. data
+        // 2-2. response Body
+        CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "공유되었습니다.");
+        // 2-3. ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(responseBody);
     }
 }
