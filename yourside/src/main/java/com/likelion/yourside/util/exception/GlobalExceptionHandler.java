@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         // System.out.println("errorMessage = " + errorMessage);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(CustomAPIResponse.createFailWithout(HttpStatus.BAD_REQUEST.value(), errorMessage));
+                .body(CustomAPIResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), errorMessage));
     }
 
     // 데이터베이스 작업 중 제약조건을 위반하는 경우 발생하는 예외
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining("; "));
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(CustomAPIResponse.createFailWithout(HttpStatus.BAD_REQUEST.value(), errorMessage));
+                .body(CustomAPIResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), errorMessage));
     }
 }
 

@@ -23,4 +23,8 @@ public class UserController {
         return userService.signUp(userSignUpDto);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<CustomAPIResponse<?>> login(@RequestBody UserLoginDto userLoginDto) {
+        return userService.login(userLoginDto);
+    }
 }
