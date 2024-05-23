@@ -11,5 +11,4 @@ public interface UserService {
     ResponseEntity<CustomAPIResponse<?>> checkDuplicationUsername(String username); // username 중복 확인
     ResponseEntity<CustomAPIResponse<?>> checkUsername(String name, String email); // username 찾기
     ResponseEntity<CustomAPIResponse<?>> checkPassword(String name, String email, String username); // password 찾기
-
 }
