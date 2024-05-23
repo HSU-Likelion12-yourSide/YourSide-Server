@@ -19,5 +19,5 @@ public class WorksheetRegisterRequestDto {
     private boolean night_pay;    // 야간 수당
     private boolean overtime_pay; // 연장 근로 수당
     private boolean holiday_pay;  // 휴일 근로 수당
-    private Long userId;
+    private Long user_id;
 }
