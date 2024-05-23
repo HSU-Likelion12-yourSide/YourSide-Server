@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService{
                 .status(HttpStatus.CREATED)
                 .body(responseBody);
     }
-
     @Override
     public ResponseEntity<CustomAPIResponse<?>> login(UserLoginRequestDto loginDto) {
         // 1. 해당 username을 가진 User가 존재하는지
@@ -90,6 +89,29 @@ public class UserServiceImpl implements UserService{
                 .status(HttpStatus.OK)
                 .body(responseBody);
 
+    }
+
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> checkDuplicationUsername(String username) {
+        // 1. username 중복 시 실패 리턴
+        Optional<User> foundUser = userRepository.findByUsername(username);
+        if (foundUser.isPresent()) {
+            // 1-1. data
+            // 1-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.CONFLICT.value(), "존재하는 아이디입니다.");
+            // 1-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(responseBody);
+        }
+        // 2. 중복 아닐 시 성공 리턴
+        // 2-1. data
+        // 2-2. responseBody
+        CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "사용 가능한 아이디입니다.");
+        // 2-3. ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
     }
 
 

@@ -6,10 +6,7 @@ import com.likelion.yourside.user.service.UserService;
 import com.likelion.yourside.util.response.CustomAPIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -28,4 +25,10 @@ public class UserController {
     public ResponseEntity<CustomAPIResponse<?>> login(@RequestBody UserLoginRequestDto userLoginDto) {
         return userService.login(userLoginDto);
     }
+
+    @GetMapping("/exists")
+    public ResponseEntity<CustomAPIResponse<?>> checkDuplicationUsername(@RequestParam("username") String username) {
+        return userService.checkDuplicationUsername(username);
+    }
+
 }
