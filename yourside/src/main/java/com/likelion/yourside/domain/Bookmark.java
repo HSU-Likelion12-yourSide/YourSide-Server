@@ -16,6 +16,6 @@ public class Bookmark {
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @JoinColumn(name = "posting_id")
+    private Posting posting;
 }
