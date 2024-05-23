@@ -5,10 +5,7 @@ import com.likelion.yourside.worksheet.dto.WorksheetRegisterRequestDto;
 import com.likelion.yourside.worksheet.service.WorksheetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,5 +16,10 @@ public class WorksheetController {
     @PostMapping
     public ResponseEntity<CustomAPIResponse<?>> register(@RequestBody WorksheetRegisterRequestDto worksheetRegisterRequestDto) {
         return worksheetService.register(worksheetRegisterRequestDto);
+    }
+
+    @PutMapping("/{worksheet_id}")
+    public ResponseEntity<CustomAPIResponse<?>> setExpert(@PathVariable("worksheet_id") Long worksheetId) {
+        return worksheetService.setExpert(worksheetId);
     }
 }
