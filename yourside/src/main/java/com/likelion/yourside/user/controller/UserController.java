@@ -32,5 +32,12 @@ public class UserController {
     public ResponseEntity<CustomAPIResponse<?>> checkUsername(@RequestParam("name") String name, @RequestParam("email") String email) {
         return userService.checkUsername(name, email);
     }
+    @GetMapping("/search/password")
+    public ResponseEntity<CustomAPIResponse<?>> checkPassword(
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("username") String username) {
+        return userService.checkPassword(name, email, username);
+    }
 
 }
