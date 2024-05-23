@@ -32,3 +32,4 @@ public class NotationController {
     }
 
 }
+//공지사항 조회를 위해 더미 데이터 추가하였음
