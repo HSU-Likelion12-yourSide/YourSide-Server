@@ -55,9 +55,30 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "feat/30",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/user/Documents/LikeLion/YourSide-Server-main/YourSide-Server"
+    "last_opened_file_path": "C:/Users/user/Documents/LikeLion/likelion/likelion_week6",
+    "애플리케이션.YoursideApplication.executor": "Run"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="YoursideApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.likelion.yourside.YoursideApplication" />
+      <module name="yourside.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.likelion.yourside.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="애플리케이션.YoursideApplication" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
