@@ -39,5 +39,4 @@ public class UserController {
             @RequestParam("username") String username) {
         return userService.checkPassword(name, email, username);
     }
-
 }
