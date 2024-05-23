@@ -1,5 +1,6 @@
 package com.likelion.yourside.user.controller;
 
+import com.likelion.yourside.user.dto.UserSignUpDto;
 import com.likelion.yourside.user.service.UserService;
 import com.likelion.yourside.util.response.CustomAPIResponse;
 import jakarta.validation.Valid;
