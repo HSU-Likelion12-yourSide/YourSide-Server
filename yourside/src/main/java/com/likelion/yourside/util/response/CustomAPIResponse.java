@@ -40,9 +40,12 @@ public class CustomAPIResponse<T>{
     public static <T> CustomAPIResponse<T> createSuccess(int status, T data, String message) {
         return new CustomAPIResponse<>(status, data, message);
     }
+    public static <T> CustomAPIResponse<T> createSuccessWithoutData(int status, String message) {
+        return new CustomAPIResponse<>(status, null, message);
+    }
 
     // 통신이 실패할 경우에 대한 응답 값을 작성하는 함수
-    public static <T> CustomAPIResponse<T> createFailWithout(int status, String message) {
+    public static <T> CustomAPIResponse<T> createFailWithoutData(int status, String message) {
         return new CustomAPIResponse<>(status, null, message);
     }
 }
