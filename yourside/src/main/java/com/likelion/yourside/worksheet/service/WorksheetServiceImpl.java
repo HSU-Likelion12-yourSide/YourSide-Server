@@ -76,6 +76,7 @@ public class WorksheetServiceImpl implements WorksheetService{
         // 2. isOpen 변경
         Worksheet worksheet = foundWorksheet.get();
         worksheet.changeIsOpen();
+        worksheetRepository.save(worksheet);
         // 2-1. data
         // 2-2. response Body
         CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "공유되었습니다.");
