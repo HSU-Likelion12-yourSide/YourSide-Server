@@ -20,4 +20,7 @@ public class Posting extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "worksheet_id")
+    private Worksheet worksheet;
 }

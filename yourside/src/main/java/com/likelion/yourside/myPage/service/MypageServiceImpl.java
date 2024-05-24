@@ -87,7 +87,6 @@ public class MypageServiceImpl implements MypageService{
                 .status(HttpStatus.OK)
                 .body(responseBody);
     }
-
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getWorksheetList(Long userId) {
         // 1. 존재하는 user인지 조회
