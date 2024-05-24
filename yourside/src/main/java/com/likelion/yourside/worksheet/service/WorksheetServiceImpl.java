@@ -91,8 +91,18 @@ public class WorksheetServiceImpl implements WorksheetService{
     }
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getAllList() {
-        // 1. isOpen == true
+        // 1. null 일 경우 처리
         List<Worksheet> worksheetALlList = worksheetRepository.findAllbyIsOpen();
+        if (worksheetALlList.isEmpty()) {
+            // 1-1. data
+            // 1-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.NO_CONTENT.value(), "조회된 근로 결과지가 없습니다.");
+            // 1-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body(responseBody);
+        }
+        // 2. 성공
         // 2-1. Data
         List<WorksheetGetAllListResponseDto> worksheets = new ArrayList<>();
         for (Worksheet worksheet : worksheetALlList) {
