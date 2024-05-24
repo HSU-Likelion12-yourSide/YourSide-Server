@@ -5,4 +5,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface MypageService {
     ResponseEntity<CustomAPIResponse<?>> getUserInfo(Long userId);
+    ResponseEntity<CustomAPIResponse<?>> updateUserIsExpert(Long userId);
 }

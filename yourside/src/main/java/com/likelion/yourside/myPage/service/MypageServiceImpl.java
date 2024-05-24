@@ -59,4 +59,31 @@ public class MypageServiceImpl implements MypageService{
                 .status(HttpStatus.OK)
                 .body(responseBody);
     }
+
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> updateUserIsExpert(Long userId) {
+        // 1. user 존재하는지 조회
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (foundUser.isEmpty()) {
+            // 1-1. data
+            // 1-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "존재하지 않는 사용자입니다.");
+            // 1-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(responseBody);
+        }
+        // 2. isExpert -> true로 수정
+        User user = foundUser.get();
+        user.changeIsExpert();
+        userRepository.save(user);
+        // 3. 응답
+        // 3-1. data
+        // 3-2. responseBody
+        CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "노무사 인증이 완료되었습니다.");
+        // 3-3. ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
+    }
 }
