@@ -14,5 +14,5 @@ public interface WorksheetRepository extends JpaRepository<Worksheet, Long> {
     List<Worksheet> findAllbyIsOpen();
 
     @Query("select w from Worksheet w where w.user = :user")
-    List<Worksheet> finAllByUser(User user);
+    List<Worksheet> findAllByUser(User user);
 }

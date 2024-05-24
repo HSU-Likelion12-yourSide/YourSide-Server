@@ -16,9 +16,13 @@ public class MypageController {
     public ResponseEntity<CustomAPIResponse<?>> getUserInfo(@PathVariable("user_id") Long userId) {
         return mypageService.getUserInfo(userId);
     }
-
     @PutMapping("/{user_id}")
     public ResponseEntity<CustomAPIResponse<?>> updateUserIsExpert(@PathVariable("user_id") Long userId) {
         return mypageService.updateUserIsExpert(userId);
+    }
+
+    @GetMapping("/list/worksheet/{user_id}")
+    public ResponseEntity<CustomAPIResponse<?>> getWorksheetList(@PathVariable("user_id") Long userId) {
+        return mypageService.getWorksheetList(userId);
     }
 }
