@@ -17,9 +17,18 @@ public class WorksheetController {
     public ResponseEntity<CustomAPIResponse<?>> register(@RequestBody WorksheetRegisterRequestDto worksheetRegisterRequestDto) {
         return worksheetService.register(worksheetRegisterRequestDto);
     }
-
     @PutMapping("/{worksheet_id}")
     public ResponseEntity<CustomAPIResponse<?>> share(@PathVariable("worksheet_id") Long worksheetId) {
         return worksheetService.share(worksheetId);
     }
+    @GetMapping("/list")
+    public ResponseEntity<CustomAPIResponse<?>> getAllList() {
+        return worksheetService.getAllList();
+    }
+
+    @GetMapping("/{worksheet_id}")
+    public ResponseEntity<CustomAPIResponse<?>> getOne(@PathVariable("worksheet_id") Long worksheetId) {
+        return worksheetService.getOne(worksheetId);
+    }
+
 }

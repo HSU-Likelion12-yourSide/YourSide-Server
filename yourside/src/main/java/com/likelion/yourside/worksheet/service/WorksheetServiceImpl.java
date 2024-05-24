@@ -4,6 +4,8 @@ import com.likelion.yourside.domain.User;
 import com.likelion.yourside.domain.Worksheet;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
+import com.likelion.yourside.worksheet.dto.WorksheetGetAllListResponseDto;
+import com.likelion.yourside.worksheet.dto.WorksheetGetOneResponseDto;
 import com.likelion.yourside.worksheet.dto.WorksheetRegisterRequestDto;
 import com.likelion.yourside.worksheet.dto.WorksheetRegisterResponseDto;
 import com.likelion.yourside.worksheet.repository.WorksheetRepository;
@@ -12,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -80,6 +84,75 @@ public class WorksheetServiceImpl implements WorksheetService{
         // 2-1. data
         // 2-2. response Body
         CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "공유되었습니다.");
+        // 2-3. ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
+    }
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> getAllList() {
+        // 1. null 일 경우 처리
+        List<Worksheet> worksheetALlList = worksheetRepository.findAllbyIsOpen();
+        if (worksheetALlList.isEmpty()) {
+            // 1-1. data
+            // 1-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.NO_CONTENT.value(), "조회된 근로 결과지가 없습니다.");
+            // 1-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body(responseBody);
+        }
+        // 2. 성공
+        // 2-1. Data
+        List<WorksheetGetAllListResponseDto> worksheets = new ArrayList<>();
+        for (Worksheet worksheet : worksheetALlList) {
+            WorksheetGetAllListResponseDto customWorksheet = WorksheetGetAllListResponseDto.builder()
+                    .worksheetId(worksheet.getId())
+                    .title(worksheet.getTitle())
+                    .content(worksheet.getContent())
+                    .extraPay(worksheet.isExtraPay())
+                    .weekPay(worksheet.isWeekPay())
+                    .nightPay(worksheet.isNightPay())
+                    .overtimePay(worksheet.isOvertimePay())
+                    .holidayPay(worksheet.isHolidayPay())
+                    .build();
+            worksheets.add(customWorksheet);
+        }
+        // 2-2. responseBody
+        CustomAPIResponse<List<WorksheetGetAllListResponseDto>> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), worksheets, "조회되었습니다.");
+        // 2-3. ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
+    }
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> getOne(Long worksheetId) {
+        // 1. worsheetId로 조회 실패
+        Optional<Worksheet> foundWorksheet = worksheetRepository.findById(worksheetId);
+        if (foundWorksheet.isEmpty()) {
+            // 1-1. data
+            // 1-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "해당하는 근로 결과지가 없습니다.");
+            // 1-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(responseBody);
+        }
+        // 2. 결과 리턴
+        // 2-1. data
+        Worksheet worksheet = foundWorksheet.get();
+        WorksheetGetOneResponseDto data = WorksheetGetOneResponseDto.builder()
+                .nickname(worksheet.getUser().getNickname())
+                .title(worksheet.getTitle())
+                .content(worksheet.getContent())
+                .extraPay(worksheet.isExtraPay())
+                .weekPay(worksheet.isWeekPay())
+                .nightPay(worksheet.isNightPay())
+                .overtimePay(worksheet.isOvertimePay())
+                .holidayPay(worksheet.isHolidayPay())
+                .build();
+        // 2-2. responseBody
+        CustomAPIResponse<WorksheetGetOneResponseDto> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "근로 결과지 세부 조회 완료되었습니다.");
         // 2-3. ResponseEntity
         return ResponseEntity
                 .status(HttpStatus.OK)
