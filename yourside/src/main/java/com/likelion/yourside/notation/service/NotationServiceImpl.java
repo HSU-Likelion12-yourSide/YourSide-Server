@@ -22,7 +22,7 @@ public class NotationServiceImpl implements NotationService{
 
     private final NotationRepository notationRepository;
 
-    //게시글 전체 조회
+    //공지사항 전체 조회
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getAllNotation(){
         List<Notation> notations = notationRepository.findAll();
@@ -52,7 +52,7 @@ public class NotationServiceImpl implements NotationService{
     }
 
 
-    //게시글 하나 조회
+    //공지사항 하나 조회
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getOneNotation(Long notationId){
         Optional<Notation> optionalNotation = notationRepository.findById(notationId);
