@@ -3,6 +3,7 @@ package com.likelion.yourside.myPage.service;
 import com.likelion.yourside.domain.Posting;
 import com.likelion.yourside.domain.User;
 import com.likelion.yourside.domain.Worksheet;
+import com.likelion.yourside.myPage.dto.MypageGetuserinfoResponseDto;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
@@ -43,6 +44,19 @@ public class MypageServiceImpl implements MypageService{
         int postingCount = postingList.size();
         // 4. 답변 개수 조회
         int commentCount = 0;
-        return null;
+        // 5. 응답
+        // 5-1. data
+        MypageGetuserinfoResponseDto data = MypageGetuserinfoResponseDto.builder()
+                .worksheetCount(worksheetCount)
+                .postingCount(postingCount)
+                .commentCount(commentCount)
+                .nickname(user.getNickname())
+                .build();
+        // 5-2. responseBody
+        CustomAPIResponse<MypageGetuserinfoResponseDto> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "사용자 정보 조회 완료되었습니다.");
+        // 5-3. ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
     }
 }
