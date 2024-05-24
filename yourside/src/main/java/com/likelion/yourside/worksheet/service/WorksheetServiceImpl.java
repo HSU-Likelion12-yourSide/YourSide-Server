@@ -4,6 +4,7 @@ import com.likelion.yourside.domain.User;
 import com.likelion.yourside.domain.Worksheet;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
+import com.likelion.yourside.worksheet.dto.WorksheetGetAllListResponseDto;
 import com.likelion.yourside.worksheet.dto.WorksheetRegisterRequestDto;
 import com.likelion.yourside.worksheet.dto.WorksheetRegisterResponseDto;
 import com.likelion.yourside.worksheet.repository.WorksheetRepository;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,11 +92,28 @@ public class WorksheetServiceImpl implements WorksheetService{
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getAllList() {
         // 1. isOpen == true
-        List<Worksheet> list = worksheetRepository.findAllbyIsOpen();
+        List<Worksheet> worksheetALlList = worksheetRepository.findAllbyIsOpen();
+        List<WorksheetGetAllListResponseDto> worksheets = new ArrayList<>();
+        for (Worksheet worksheet : worksheetALlList) {
+            WorksheetGetAllListResponseDto customWorksheet = WorksheetGetAllListResponseDto.builder()
+                    .worksheetId(worksheet.getId())
+                    .title(worksheet.getTitle())
+                    .content(worksheet.getContent())
+                    .extraPay(worksheet.isExtraPay())
+                    .weekPay(worksheet.isWeekPay())
+                    .nightPay(worksheet.isNightPay())
+                    .overtimePay(worksheet.isOvertimePay())
+                    .holidayPay(worksheet.isHolidayPay())
+                    .build();
+            worksheets.add(customWorksheet);
+        }
 
-
-
-        // 2.
-        return null;
+        // 2-1. Data
+        // 2-2. responseBody
+        CustomAPIResponse<List<WorksheetGetAllListResponseDto>> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), worksheets, "조회되었습니다.");
+        // 2-3. ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
     }
 }
