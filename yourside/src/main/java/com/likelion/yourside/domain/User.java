@@ -20,4 +20,6 @@ public class User extends BaseEntity {
     private String nickname; // 별명
     @Column(name="is_expert")
     private boolean isExpert; // "노무사" 자격 유무
+
+    public void changeIsExpert() {this.isExpert = true;}
 }
