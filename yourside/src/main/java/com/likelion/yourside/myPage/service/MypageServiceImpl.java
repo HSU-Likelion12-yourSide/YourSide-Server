@@ -59,7 +59,6 @@ public class MypageServiceImpl implements MypageService{
                 .status(HttpStatus.OK)
                 .body(responseBody);
     }
-
     @Override
     public ResponseEntity<CustomAPIResponse<?>> updateUserIsExpert(Long userId) {
         // 1. user 존재하는지 조회
