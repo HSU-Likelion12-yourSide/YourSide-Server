@@ -1,5 +1,6 @@
 package com.likelion.yourside.worksheet.repository;
 
+import com.likelion.yourside.domain.User;
 import com.likelion.yourside.domain.Worksheet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,4 +12,7 @@ import java.util.List;
 public interface WorksheetRepository extends JpaRepository<Worksheet, Long> {
     @Query("select w from Worksheet w where w.isOpen = true ")
     List<Worksheet> findAllbyIsOpen();
+
+    @Query("select w from Worksheet w where w.user = :user")
+    List<Worksheet> finAllByUser(User user);
 }
