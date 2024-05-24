@@ -27,7 +27,7 @@ public class WorksheetServiceImpl implements WorksheetService{
     @Override
     public ResponseEntity<CustomAPIResponse<?>> register(WorksheetRegisterRequestDto worksheetRegisterRequestDto) {
         // 1. userId에 해당하는 유저 있는지 확인
-        Optional<User> foundUser = userRepository.findById(worksheetRegisterRequestDto.getUser_id());
+        Optional<User> foundUser = userRepository.findById(worksheetRegisterRequestDto.getUserId());
         if (foundUser.isEmpty()) {
             // 1-1. data
             // 1-2. responseBody
@@ -42,20 +42,19 @@ public class WorksheetServiceImpl implements WorksheetService{
         Worksheet worksheet = Worksheet.builder()
                 .title(worksheetRegisterRequestDto.getTitle())
                 .content(worksheetRegisterRequestDto.getContent())
-                .totalPay(worksheetRegisterRequestDto.getTotal_pay())
-                .extraPay(worksheetRegisterRequestDto.isExtra_pay())
-                .weekPay(worksheetRegisterRequestDto.isWeek_pay())
-                .nightPay(worksheetRegisterRequestDto.isNight_pay())
-                .overtimePay(worksheetRegisterRequestDto.isOvertime_pay())
-                .holidayPay(worksheetRegisterRequestDto.isHoliday_pay())
+                .totalPay(worksheetRegisterRequestDto.getTotalPay())
+                .extraPay(worksheetRegisterRequestDto.isExtraPay())
+                .weekPay(worksheetRegisterRequestDto.isWeekPay())
+                .nightPay(worksheetRegisterRequestDto.isNightPay())
+                .overtimePay(worksheetRegisterRequestDto.isOvertimePay())
+                .holidayPay(worksheetRegisterRequestDto.isHolidayPay())
                 .isOpen(false)
                 .user(user)
                 .build();
         worksheetRepository.save(worksheet);
         // 2-1. data
-        Long id = worksheet.getId();
         WorksheetRegisterResponseDto data = WorksheetRegisterResponseDto.builder()
-                .worksheet_id(id)
+                .worksheetId(worksheet.getId())
                 .build();
         // 2-2. responseBody
         CustomAPIResponse<WorksheetRegisterResponseDto> responseBody = CustomAPIResponse.createSuccess(HttpStatus.CREATED.value(), data, "근로지 생성 완료되었습니다.");

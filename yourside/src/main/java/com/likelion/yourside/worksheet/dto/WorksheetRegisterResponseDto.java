@@ -1,5 +1,6 @@
 package com.likelion.yourside.worksheet.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,5 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class WorksheetRegisterResponseDto {
-    private Long worksheet_id;
+    @JsonProperty("worksheet_id")
+    private Long worksheetId;
 }
