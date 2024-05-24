@@ -26,4 +26,9 @@ public class WorksheetController {
         return worksheetService.getAllList();
     }
 
+    @GetMapping("/{worksheet_id}")
+    public ResponseEntity<CustomAPIResponse<?>> getOne(@PathVariable("worksheet_id") Long worksheetId) {
+        return worksheetService.getOne(worksheetId);
+    }
+
 }

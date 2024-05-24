@@ -9,9 +9,8 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @Builder
-public class WorksheetGetAllListResponseDto {
-    @JsonProperty("worksheet_id")
-    private Long worksheetId;
+public class WorksheetGetOneResponseDto {
+    private String nickname;
     private String title;
     private String content;
     @JsonProperty("extra_pay")
@@ -24,5 +23,4 @@ public class WorksheetGetAllListResponseDto {
     private boolean overtimePay;
     @JsonProperty("holiday_pay")
     private boolean holidayPay;
-
 }

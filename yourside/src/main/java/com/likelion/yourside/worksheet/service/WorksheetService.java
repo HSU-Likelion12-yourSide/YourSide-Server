@@ -8,4 +8,5 @@ public interface WorksheetService {
     ResponseEntity<CustomAPIResponse<?>> register(WorksheetRegisterRequestDto worksheetRegisterRequestDto);
     ResponseEntity<CustomAPIResponse<?>> share(Long worksheetId);
     ResponseEntity<CustomAPIResponse<?>> getAllList();
+    ResponseEntity<CustomAPIResponse<?>> getOne(Long worksheetId);
 }
