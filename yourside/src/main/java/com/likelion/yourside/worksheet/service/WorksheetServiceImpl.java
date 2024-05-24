@@ -96,10 +96,10 @@ public class WorksheetServiceImpl implements WorksheetService{
         if (worksheetALlList.isEmpty()) {
             // 1-1. data
             // 1-2. responseBody
-            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.NO_CONTENT.value(), "조회된 근로 결과지가 없습니다.");
+            CustomAPIResponse<?> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.NOT_FOUND.value(), "조회된 근로 결과지가 없습니다.");
             // 1-3. ResponseEntity
             return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
+                    .status(HttpStatus.NOT_FOUND)
                     .body(responseBody);
         }
         // 2. 성공
