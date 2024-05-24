@@ -4,6 +4,7 @@ import com.likelion.yourside.domain.Posting;
 import com.likelion.yourside.domain.User;
 import com.likelion.yourside.domain.Worksheet;
 import com.likelion.yourside.myPage.dto.MypageGetuserinfoResponseDto;
+import com.likelion.yourside.myPage.dto.MypageGetworksheetlistResponseDto;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,12 +105,25 @@ public class MypageServiceImpl implements MypageService{
         User user = foundUser.get();
         // 2-1. data
         List<Worksheet> worksheetList = worksheetRepository.findAllByUser(user);
+        List<MypageGetworksheetlistResponseDto> data = new ArrayList<>();
         for (Worksheet worksheet : worksheetList) {
-
+            MypageGetworksheetlistResponseDto response = MypageGetworksheetlistResponseDto.builder()
+                    .worksheetId(worksheet.getId())
+                    .totalPay(worksheet.getTotalPay())
+                    .extraPay(worksheet.isExtraPay())
+                    .weekPay(worksheet.isWeekPay())
+                    .nightPay(worksheet.isNightPay())
+                    .overtimePay(worksheet.isOvertimePay())
+                    .holidayPay(worksheet.isHolidayPay())
+                    .createdAt(worksheet.localDateTimeToString())
+                    .build();
+            data.add(response);
         }
-
         // 2-2. responseBody
+        CustomAPIResponse<List<MypageGetworksheetlistResponseDto>> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "나의 근로 결과지 조회 완료되었습니다.");
         // 2-3. ResponseEntity
-        return null;
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
     }
 }
