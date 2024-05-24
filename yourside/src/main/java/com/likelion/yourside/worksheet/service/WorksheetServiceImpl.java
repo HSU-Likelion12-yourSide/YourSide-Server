@@ -53,9 +53,8 @@ public class WorksheetServiceImpl implements WorksheetService{
                 .build();
         worksheetRepository.save(worksheet);
         // 2-1. data
-        Long id = worksheet.getId();
         WorksheetRegisterResponseDto data = WorksheetRegisterResponseDto.builder()
-                .worksheet_id(id)
+                .worksheetId(worksheet.getId())
                 .build();
         // 2-2. responseBody
         CustomAPIResponse<WorksheetRegisterResponseDto> responseBody = CustomAPIResponse.createSuccess(HttpStatus.CREATED.value(), data, "근로지 생성 완료되었습니다.");
