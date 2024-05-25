@@ -1,4 +1,5 @@
 package com.likelion.yourside.notation.dto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,8 +15,10 @@ public class NotationDto {
     public static class NotationResponse{
         private String title;
         private String content;
-        private LocalDateTime createdAt;
-        private boolean isPinned;
+        @JsonProperty("created_at")
+        private String createdAt;
+        @JsonProperty("is_pinned")
+        private boolean pinned;
     }
 
     //공지사항 조회

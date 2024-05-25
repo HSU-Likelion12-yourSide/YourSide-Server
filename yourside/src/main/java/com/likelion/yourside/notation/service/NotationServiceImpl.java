@@ -41,8 +41,8 @@ public class NotationServiceImpl implements NotationService{
             notationResponses.add(NotationListDto.NotationResponse.builder()
                             .id(notation.getId())
                             .title(notation.getTitle())
-                            .isPinned(notation.isPinned())
-                            .createdAt(notation.getCreatedAt())
+                            .pinned(notation.isPinned())
+                            .createdAt(notation.localDateTimeToString())
                     .build());
         }
 
@@ -71,7 +71,7 @@ public class NotationServiceImpl implements NotationService{
         NotationDto.NotationResponse notationResponse = new NotationDto.NotationResponse(
                 notation.getTitle(),
                 notation.getContent(),
-                notation.getCreatedAt(),
+                notation.localDateTimeToString(),
                 notation.isPinned()
         );
 

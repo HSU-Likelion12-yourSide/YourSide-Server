@@ -84,7 +84,7 @@ public class CommentServiceImpl implements CommentService{
                     .nickname(user.getNickname())
                     .createdAt(comment.localDateTimeToString())
                     .content(comment.getContent())
-                    .isLiked(foundLikes.isEmpty()? true : false)
+                    .liked(foundLikes.isEmpty()? true : false)
                     .likeCount(comment.getLikeCount())
                     .build());
         }

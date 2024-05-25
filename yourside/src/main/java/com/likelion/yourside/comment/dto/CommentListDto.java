@@ -17,7 +17,7 @@ public class CommentListDto {
         private String createdAt;
         private String content;
         @JsonProperty("is_liked")
-        private boolean isLiked;
+        private boolean liked;
         @JsonProperty("like_count")
         private Integer likeCount;
     }
