@@ -127,20 +127,31 @@ public class PostingServiceImpl implements PostingService{
         }
         // 4. 북마크 등록
         else{
-            // 4-1. 북마크 등록
+            // 4-1. 북마크 존재하는지 확인
+            Optional<Bookmark> foundBookmark = bookmarkRepository.findByUserAndPosting(user, posting);
+            if (foundBookmark.isPresent()) {
+                // 4-1-1. data
+                // 4-1-2. responseBody
+                CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.CONFLICT.value(), "이미 존재하는 북마크입니다.");
+                // 4-1-3. ResponseEntity
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body(responseBody);
+            }
+            // 4-2. 북마크 등록
             Bookmark bookmark = Bookmark.builder()
                     .posting(posting)
                     .user(user)
                     .build();
             bookmarkRepository.save(bookmark);
-            // 4-2. Posting 북마크 수 증가
+            // 4-3. Posting 북마크 수 증가
             posting.changeBookmarkCount(true);
             postingRepository.save(posting);
-            // 4-3. 응답
-            // 4-3-1. data
-            // 4-3-2. responseBody
+            // 4-4. 응답
+            // 4-4-1. data
+            // 4-4-2. responseBody
             CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.CREATED.value(), "해당 게시글이 책갈피에 추가되었습니다.");
-            // 4-3-3. ResponseEntity
+            // 4-4-3. ResponseEntity
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(responseBody);
