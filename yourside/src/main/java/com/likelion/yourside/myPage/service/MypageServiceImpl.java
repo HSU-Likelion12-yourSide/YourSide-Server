@@ -1,10 +1,8 @@
 package com.likelion.yourside.myPage.service;
 
 import com.likelion.yourside.bookmark.repository.BookmarkRepository;
-import com.likelion.yourside.domain.Bookmark;
-import com.likelion.yourside.domain.Posting;
-import com.likelion.yourside.domain.User;
-import com.likelion.yourside.domain.Worksheet;
+import com.likelion.yourside.comment.repository.CommentRepository;
+import com.likelion.yourside.domain.*;
 import com.likelion.yourside.myPage.dto.MypageGetpostinglistResponseDto;
 import com.likelion.yourside.myPage.dto.MypageGetuserinfoResponseDto;
 import com.likelion.yourside.myPage.dto.MypageGetworksheetlistResponseDto;
@@ -27,7 +25,9 @@ public class MypageServiceImpl implements MypageService{
     private final UserRepository userRepository;
     private final WorksheetRepository worksheetRepository;
     private final PostingRepository postingRepository;
+    private final CommentRepository commentRepository;
     private final BookmarkRepository bookmarkRepository;
+
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getUserInfo(Long userId) {
         // 1. user 존재하는지 조회
@@ -49,7 +49,8 @@ public class MypageServiceImpl implements MypageService{
         List<Posting> postingList = postingRepository.findALlByUser(user);
         int postingCount = postingList.size();
         // 4. 답변 개수 조회
-        int commentCount = 0;
+        List<Comment> commentList = commentRepository.findAllByUser(user);
+        int commentCount = commentList.size();
         // 5. 응답
         // 5-1. data
         MypageGetuserinfoResponseDto data = MypageGetuserinfoResponseDto.builder()
