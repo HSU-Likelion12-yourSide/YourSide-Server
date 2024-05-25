@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="83232a9c-f4f5-4586-9e13-ed2262d8c9df" name="변경" comment="" />
+    <list default="true" id="83232a9c-f4f5-4586-9e13-ed2262d8c9df" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/modules/yourside.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/yourside.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/yourside.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/yourside.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/yourside.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/yourside.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/controller/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/controller/CommentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/dto/CommentListDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/dto/CommentListDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/service/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/service/CommentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/dto/NotationDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/dto/NotationDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/dto/NotationListDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/dto/NotationListDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/service/NotationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/service/NotationServiceImpl.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,19 +53,23 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2gsgNekeNHAIbRCBP8FuJc9pUCK" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.yourside [:YoursideApplication.main()].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feat/30",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/user/Documents/LikeLion/likelion/likelion_week6",
     "애플리케이션.YoursideApplication.executor": "Run"

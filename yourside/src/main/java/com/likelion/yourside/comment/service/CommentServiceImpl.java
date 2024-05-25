@@ -32,10 +32,10 @@ public class CommentServiceImpl implements CommentService{
 
     //댓글 작성 -----------------------------------------------------------------------------------------------
     @Override
-    public ResponseEntity<CustomAPIResponse<?>> createComment(Long postingId, @Valid CommentCreateDto.Req req) {
+    public ResponseEntity<CustomAPIResponse<?>> createComment(CommentCreateDto.Req req) {
         User user = userRepository.findById(req.getUser_id()).orElseThrow();
 
-        Optional<Posting> optionalPosting = postingRepository.findById(postingId);
+        Optional<Posting> optionalPosting = postingRepository.findById(req.getPosting_id());
         //해당 게시글이 없는 경우 : 404
         if (optionalPosting.isEmpty()) {
             return ResponseEntity

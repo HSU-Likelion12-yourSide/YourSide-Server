@@ -19,11 +19,10 @@ public class CommentController {
     private final CommentService commentService;
 
     //댓글 작성
-    @PostMapping("/{posting_id}")
+    @PostMapping
     public ResponseEntity<CustomAPIResponse<?>> createComment(
-            @PathVariable("posting_id") Long postingId,
             @RequestBody CommentCreateDto.Req req) {
-        ResponseEntity<CustomAPIResponse<?>> result = commentService.createComment(postingId, req);
+        ResponseEntity<CustomAPIResponse<?>> result = commentService.createComment(req);
         return result;
     }
 

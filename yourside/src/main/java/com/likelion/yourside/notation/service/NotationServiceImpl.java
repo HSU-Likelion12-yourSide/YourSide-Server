@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +41,7 @@ public class NotationServiceImpl implements NotationService{
                             .id(notation.getId())
                             .title(notation.getTitle())
                             .isPinned(notation.isPinned())
-                            .createdAt(notation.getCreatedAt())
+                            .createdAt(notation.localDateTimeToString())
                     .build());
         }
 
@@ -58,7 +57,6 @@ public class NotationServiceImpl implements NotationService{
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getOneNotation(Long notationId){
         Optional<Notation> optionalNotation = notationRepository.findById(notationId);
-        //notationId에 해당하는 공지사항이 없을 경우 Optional<NULL>을 가짐
 
         //해당 공지사항이 존재하지 않을 경우
         if (optionalNotation.isEmpty()) {
@@ -71,7 +69,7 @@ public class NotationServiceImpl implements NotationService{
         NotationDto.NotationResponse notationResponse = new NotationDto.NotationResponse(
                 notation.getTitle(),
                 notation.getContent(),
-                notation.getCreatedAt(),
+                notation.localDateTimeToString(),
                 notation.isPinned()
         );
 

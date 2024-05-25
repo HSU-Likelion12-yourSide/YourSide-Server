@@ -14,7 +14,7 @@ public class NotationDto {
     public static class NotationResponse{
         private String title;
         private String content;
-        private LocalDateTime createdAt;
+        private String createdAt;
         private boolean isPinned;
     }
 
