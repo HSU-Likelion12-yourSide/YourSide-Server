@@ -29,4 +29,5 @@ public class MypageController {
         return mypageService.getPostingList(userId);
     }
 
+
 }
