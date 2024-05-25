@@ -1,15 +1,12 @@
 package com.likelion.yourside.posting.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter @Setter
 @AllArgsConstructor
-@Builder
-public class PostingCreateRequestDto {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class PostingCreateResponseDto {
     @JsonProperty("user_id")
     private Long userId;
     @JsonProperty("worksheet_id")
