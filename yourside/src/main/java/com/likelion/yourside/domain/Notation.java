@@ -14,6 +14,7 @@ public class Notation extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String content;
     @Column(name = "is_pinned")
     private boolean isPinned;

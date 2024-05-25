@@ -14,6 +14,7 @@ public class Posting extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // PK
     private String title; // 제목
+    @Column(columnDefinition = "TEXT")
     private String content; // 내용
     @Column(name = "bookmark_count")
     private int bookmarkCount; // 북마크 수

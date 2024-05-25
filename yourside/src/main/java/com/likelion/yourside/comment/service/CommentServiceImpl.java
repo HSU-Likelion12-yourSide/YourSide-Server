@@ -85,7 +85,7 @@ public class CommentServiceImpl implements CommentService{
                     .createdAt(comment.localDateTimeToString())
                     .content(comment.getContent())
                     .isLiked(foundLikes.isEmpty()? true : false)
-                    .likes(comment.getLikes())
+                    .likeCount(comment.getLikeCount())
                     .build());
         }
 
@@ -125,8 +125,8 @@ public class CommentServiceImpl implements CommentService{
         likesRepository.save(likes);
 
         //Comment 스키마에 likes_count +1
-        int likesCount = comment.getLikes() + 1;
-        comment.changeLikes(likesCount);
+        int likesCount = comment.getLikeCount() + 1;
+        comment.changeLikeCount(likesCount);
         commentRepository.save(comment); // 변경 사항 저장
 
         //좋아요 추가 성공 : 200
@@ -169,8 +169,8 @@ public class CommentServiceImpl implements CommentService{
         likesRepository.delete(likes);
 
         //Comment 스키마에 likes_count +1
-        int likesCount = comment.getLikes() - 1;
-        comment.changeLikes(likesCount);
+        int likesCount = comment.getLikeCount() - 1;
+        comment.changeLikeCount(likesCount);
         commentRepository.save(comment); // 변경 사항 저장
 
         //좋아요 삭제 성공 : 200
