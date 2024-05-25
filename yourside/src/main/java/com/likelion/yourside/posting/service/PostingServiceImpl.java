@@ -6,7 +6,8 @@ import com.likelion.yourside.domain.Posting;
 import com.likelion.yourside.domain.User;
 import com.likelion.yourside.domain.Worksheet;
 import com.likelion.yourside.posting.dto.PostingBookmarkRequestDto;
-import com.likelion.yourside.posting.dto.PostingCreateRequestDto;
+import com.likelion.yourside.posting.dto.PostingCreateResponseDto;
+import com.likelion.yourside.posting.dto.PostingListDto;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
@@ -16,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,7 +30,7 @@ public class PostingServiceImpl implements PostingService{
     private final BookmarkRepository bookmarkRepository;
 
     @Override
-    public ResponseEntity<CustomAPIResponse<?>> createPosting(PostingCreateRequestDto postingCreateRequestDto) {
+    public ResponseEntity<CustomAPIResponse<?>> createPosting(PostingCreateResponseDto postingCreateRequestDto) {
         // 1. 사용자 존재 여부 확인
         Optional<User> foundUser = userRepository.findById(postingCreateRequestDto.getUserId());
         if (foundUser.isEmpty()) {
@@ -156,5 +159,34 @@ public class PostingServiceImpl implements PostingService{
                     .status(HttpStatus.CREATED)
                     .body(responseBody);
         }
+
+    }
+
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> getAllPosting() {
+
+        List<Posting> postings = postingRepository.findAll();
+
+        //게시글이 존재하지 않는 경우
+        if (postings.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "게시글이 존재하지 않습니다."));
+        }
+
+        //반환
+        List<PostingListDto.PostingResponse> postingListResponseDtos = new ArrayList<>();
+        for (Posting posting : postings) {
+            postingListResponseDtos.add(PostingListDto.PostingResponse.builder()
+                            .title(posting.getTitle())
+                            .content(posting.getContent())
+                            .created_at(posting.localDateTimeToString())
+                            .bookmark_count(posting.getBookmarkCount())
+                    .build());
+        }
+
+        //최종 데이터
+        CustomAPIResponse<List<PostingListDto.PostingResponse>> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), postingListResponseDtos, null);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }

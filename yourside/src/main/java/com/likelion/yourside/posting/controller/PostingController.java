@@ -1,7 +1,7 @@
 package com.likelion.yourside.posting.controller;
 
 import com.likelion.yourside.posting.dto.PostingBookmarkRequestDto;
-import com.likelion.yourside.posting.dto.PostingCreateRequestDto;
+import com.likelion.yourside.posting.dto.PostingCreateResponseDto;
 import com.likelion.yourside.posting.service.PostingService;
 import com.likelion.yourside.util.response.CustomAPIResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class PostingController {
     private final PostingService postingService;
 
+    @GetMapping("/list")
+    public ResponseEntity<CustomAPIResponse<?>> getAllPosting() {
+        return postingService.getAllPosting();
+    }
+
     @PostMapping
-    public ResponseEntity<CustomAPIResponse<?>> createPosting(@RequestBody PostingCreateRequestDto postingCreateRequestDto) {
+    public ResponseEntity<CustomAPIResponse<?>> createPosting(@RequestBody PostingCreateResponseDto postingCreateRequestDto) {
         return postingService.createPosting(postingCreateRequestDto);
     }
     @PostMapping("/bookmarks")
