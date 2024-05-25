@@ -8,4 +8,5 @@ public interface MypageService {
     ResponseEntity<CustomAPIResponse<?>> updateUserIsExpert(Long userId);
     ResponseEntity<CustomAPIResponse<?>> getWorksheetList(Long userId);
     ResponseEntity<CustomAPIResponse<?>> getPostingList(Long userId);
+    ResponseEntity<CustomAPIResponse<?>> getBookmarkList(Long userId);
 }

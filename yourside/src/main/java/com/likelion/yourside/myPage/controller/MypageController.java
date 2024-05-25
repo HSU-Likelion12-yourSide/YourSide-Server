@@ -28,6 +28,9 @@ public class MypageController {
     public ResponseEntity<CustomAPIResponse<?>> getPostingList(@PathVariable("user_id") Long userId) {
         return mypageService.getPostingList(userId);
     }
-
+    @GetMapping("/list/bookmarks/{user_id")
+    public ResponseEntity<CustomAPIResponse<?>> getBookmarkList(@PathVariable("user_id") Long userId) {
+        return mypageService.getBookmarkList(userId);
+    }
 
 }
