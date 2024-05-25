@@ -24,8 +24,7 @@ public class MypageController {
     public ResponseEntity<CustomAPIResponse<?>> getWorksheetList(@PathVariable("user_id") Long userId) {
         return mypageService.getWorksheetList(userId);
     }
-
-    @GetMapping("/list/postinf/{user_id}")
+    @GetMapping("/list/posting/{user_id}")
     public ResponseEntity<CustomAPIResponse<?>> getPostingList(@PathVariable("user_id") Long userId) {
         return mypageService.getPostingList(userId);
     }
