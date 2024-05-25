@@ -15,8 +15,8 @@ public class Comment extends BaseEntity {
     private Long id; // PK
     @Column(columnDefinition = "TEXT")
     private String content; // 내용
-    // @JoinColumn(name = "likes_count") 수정하면 좋을 듯
-    private int likes; // 좋아요 수
+    @Column(name = "like_count")
+    private int likeCount; // 좋아요 수
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -24,7 +24,7 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "posting_id")
     private Posting posting;
 
-    public void changeLikes(int likes) {
-        this.likes = likes;
+    public void changeLikeCount(int likeCount) {
+        this.likeCount = likeCount;
     }
 }
