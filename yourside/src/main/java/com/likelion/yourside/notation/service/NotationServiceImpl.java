@@ -22,10 +22,12 @@ public class NotationServiceImpl implements NotationService{
 
     private final NotationRepository notationRepository;
 
-    //게시글 전체 조회
+    //공지사항 전체 조회
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getAllNotation(){
         List<Notation> notations = notationRepository.findAll();
+        //findById() 등 단일 객체 조회 : 객체가 존재하지 않을수도 -> Optional 로 감쌈
+        //findAll() : 객체가 존재하지 않는 경우 빈 리스트를 반환, 굳이 Optional 로 감쌀 필요 x
 
         //공지사항이 존재하지 않는 경우
         if(notations.isEmpty()){
@@ -52,7 +54,7 @@ public class NotationServiceImpl implements NotationService{
     }
 
 
-    //게시글 하나 조회
+    //공지사항 하나 조회
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getOneNotation(Long notationId){
         Optional<Notation> optionalNotation = notationRepository.findById(notationId);
