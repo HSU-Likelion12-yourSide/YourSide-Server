@@ -12,16 +12,13 @@ public class CommentListDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class CommentResponse {
-        private Long id;
-        private Long userId;
-        private Long postingId;
         private String nickname;
+        @JsonProperty("created_at")
+        private LocalDate createdAt;
         private String content;
         @JsonProperty("is_liked")
         private boolean isLiked;
         private Integer likes;
-        @JsonProperty("created_at")
-        private LocalDate createdAt;
     }
 
     @Getter @Setter

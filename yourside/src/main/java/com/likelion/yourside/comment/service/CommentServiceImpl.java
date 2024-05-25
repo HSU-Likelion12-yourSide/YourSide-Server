@@ -3,8 +3,11 @@ import com.likelion.yourside.comment.dto.CommentCreateDto;
 import com.likelion.yourside.comment.dto.CommentListDto;
 import com.likelion.yourside.comment.repository.CommentRepository;
 import com.likelion.yourside.domain.Comment;
+import com.likelion.yourside.domain.Notation;
 import com.likelion.yourside.domain.Posting;
 import com.likelion.yourside.domain.User;
+import com.likelion.yourside.likes.repository.LikesRepository;
+import com.likelion.yourside.notation.dto.NotationDto;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
@@ -27,6 +30,7 @@ public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostingRepository postingRepository;
+    private final LikesRepository likesRepository;
 
     //댓글 작성 -----------------------------------------------------------------------------------------------
     @Override
@@ -72,19 +76,17 @@ public class CommentServiceImpl implements CommentService{
         }
 
         List<CommentListDto.CommentResponse> commentResponses = new ArrayList<>();
+        //List<Comment> -> List<CommentListDto.CommentResponse>작업
         for (Comment comment : comments) {
-            String nickname = comment.getUser().getNickname();
             Long userId = comment.getUser().getId();
             Long commentId = comment.getId();
-            //boolean isLiked = likesRepository.existsByUserIdAndCommentId(userId, commentId);
-            //user-comment 연관관계 테이블인 likes에 해당 userId, commentId를 가진 레코드가 존재하면 true아니면 false?
+            boolean isLiked = likesRepository.existsByUserIdAndCommentId(userId, commentId);
 
             commentResponses.add(CommentListDto.CommentResponse.builder()
-                    .nickname(nickname)
+                    .nickname(comment.getUser().getNickname())
                     .createdAt(comment.getCreatedAt().toLocalDate())
                     .content(comment.getContent())
-                    //우선 true로 설정 -> likes 세팅 먼저
-                    .isLiked(true) //likes 테이블에 userId와 commentId가 있으면 ture 아니면 false
+                    .isLiked(isLiked)
                     .likes(comment.getLikes())
                     .build());
         }
