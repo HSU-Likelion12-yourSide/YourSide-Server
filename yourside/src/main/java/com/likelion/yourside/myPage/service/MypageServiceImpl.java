@@ -1,5 +1,7 @@
 package com.likelion.yourside.myPage.service;
 
+import com.likelion.yourside.bookmark.repository.BookmarkRepository;
+import com.likelion.yourside.domain.Bookmark;
 import com.likelion.yourside.domain.Posting;
 import com.likelion.yourside.domain.User;
 import com.likelion.yourside.domain.Worksheet;
@@ -25,6 +27,7 @@ public class MypageServiceImpl implements MypageService{
     private final UserRepository userRepository;
     private final WorksheetRepository worksheetRepository;
     private final PostingRepository postingRepository;
+    private final BookmarkRepository bookmarkRepository;
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getUserInfo(Long userId) {
         // 1. user 존재하는지 조회
@@ -159,5 +162,41 @@ public class MypageServiceImpl implements MypageService{
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(responseBody);
+    }
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> getBookmarkList(Long userId) {
+        // 1. User 존재하는지 여부 확인
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (foundUser.isEmpty()) {
+            // 1-1. data
+            // 1-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "일치하는 사용자가 없습니다.");
+            // 1-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(responseBody);
+        }
+        User user = foundUser.get();
+        // 2. 응답
+        // 2-1. data
+        List<Bookmark> bookmarkList = bookmarkRepository.findAllByUser(user);
+        List<MypageGetpostinglistResponseDto> data = new ArrayList<>();
+        for (Bookmark bookmark : bookmarkList) {
+            Posting posting = bookmark.getPosting();
+            MypageGetpostinglistResponseDto responseDto = MypageGetpostinglistResponseDto.builder()
+                    .postingId(posting.getId())
+                    .title(posting.getTitle())
+                    .content(posting.getContent())
+                    .createdAt(posting.localDateTimeToString())
+                    .build();
+            data.add(responseDto);
+        }
+        // 2-2. responseBody
+        CustomAPIResponse<List<MypageGetpostinglistResponseDto>> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "내 책갈피 조회가 완료되었습니다.");
+        // 2-3. ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
+
     }
 }
