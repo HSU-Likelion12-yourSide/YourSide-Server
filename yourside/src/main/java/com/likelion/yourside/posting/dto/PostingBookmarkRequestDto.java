@@ -9,9 +9,11 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @Builder
-public class PostingCreateBookmarkRequestDto {
+public class PostingBookmarkRequestDto {
     @JsonProperty("user_id")
     private Long userId;
     @JsonProperty("post_id")
     private Long postId;
+    @JsonProperty("is_bookmarked")
+    private boolean isBookmarked;
 }
