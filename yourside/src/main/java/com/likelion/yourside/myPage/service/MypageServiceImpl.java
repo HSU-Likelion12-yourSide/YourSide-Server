@@ -125,4 +125,26 @@ public class MypageServiceImpl implements MypageService{
                 .status(HttpStatus.OK)
                 .body(responseBody);
     }
+
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> getPostingList(Long userId) {
+        // 1. User 존재 여부 확인
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (foundUser.isEmpty()) {
+            // 1-1. data
+            // 1-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "일치하는 사용자가 없습니다.");
+            // 1-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(responseBody);
+        }
+        // 2. 응답
+        // 2-1. data
+        User user = foundUser.get();
+        List<Posting> postingList = postingRepository.findALlByUser(user);
+        // 2-2. reponseBody
+        // 2-3. ResponseEntity
+        return null;
+    }
 }
