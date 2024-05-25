@@ -11,5 +11,4 @@ public interface CommentService {
     //데이터베이스에 저장되어 있는 해당 게시글의 댓글 정보 얻어오기
     ResponseEntity<CustomAPIResponse<?>> getAllComment(Long postingId);
 
-
 }

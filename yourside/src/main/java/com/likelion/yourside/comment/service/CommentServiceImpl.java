@@ -3,11 +3,9 @@ import com.likelion.yourside.comment.dto.CommentCreateDto;
 import com.likelion.yourside.comment.dto.CommentListDto;
 import com.likelion.yourside.comment.repository.CommentRepository;
 import com.likelion.yourside.domain.Comment;
-import com.likelion.yourside.domain.Notation;
 import com.likelion.yourside.domain.Posting;
 import com.likelion.yourside.domain.User;
 import com.likelion.yourside.likes.repository.LikesRepository;
-import com.likelion.yourside.notation.dto.NotationDto;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
@@ -17,11 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor

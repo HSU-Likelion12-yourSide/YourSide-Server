@@ -6,6 +6,10 @@ import com.likelion.yourside.util.response.CustomAPIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/comment")
@@ -31,5 +35,4 @@ public class CommentController {
         ResponseEntity<CustomAPIResponse<?>> result = commentService.getAllComment(postingId);
         return result;
     }
-
 }
