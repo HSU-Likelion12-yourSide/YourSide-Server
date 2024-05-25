@@ -16,7 +16,7 @@ public class CommentListDto {
         private LocalDate createdAt;
         private String content;
         @JsonProperty("is_liked")
-        private boolean isLiked;
+        private boolean liked;
         private Integer likes;
     }
 

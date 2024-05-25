@@ -40,7 +40,7 @@ public class NotationServiceImpl implements NotationService{
             notationResponses.add(NotationListDto.NotationResponse.builder()
                             .id(notation.getId())
                             .title(notation.getTitle())
-                            .isPinned(notation.isPinned())
+                            .pinned(notation.isPinned())
                             .createdAt(notation.localDateTimeToString())
                     .build());
         }

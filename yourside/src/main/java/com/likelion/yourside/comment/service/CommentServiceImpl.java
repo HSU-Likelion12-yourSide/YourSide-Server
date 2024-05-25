@@ -11,7 +11,6 @@ import com.likelion.yourside.likes.repository.LikesRepository;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
-import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -85,7 +84,7 @@ public class CommentServiceImpl implements CommentService{
                     .nickname(comment.getUser().getNickname())
                     .createdAt(comment.getCreatedAt().toLocalDate())
                     .content(comment.getContent())
-                    .isLiked(isLiked)
+                    .liked(isLiked)
                     .likes(comment.getLikes())
                     .build());
         }

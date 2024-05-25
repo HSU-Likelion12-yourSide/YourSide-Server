@@ -16,7 +16,7 @@ public class NotationListDto {
         private Long id;
         private String title;
         @JsonProperty("is_pinned")
-        private boolean isPinned;
+        private boolean pinned;
         @JsonProperty("created_at")
         private String createdAt;
     }
