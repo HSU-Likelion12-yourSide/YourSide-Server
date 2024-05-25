@@ -13,6 +13,7 @@ public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // PK
+    @Column(columnDefinition = "TEXT")
     private String content; // 내용
     // @JoinColumn(name = "likes_count") 수정하면 좋을 듯
     private int likes; // 좋아요 수

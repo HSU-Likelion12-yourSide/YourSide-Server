@@ -14,6 +14,7 @@ public class Worksheet extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // PK
     private String title; // 제목
+    @Column(columnDefinition = "TEXT")
     private String content; // 내용
     @Column(name = "total_pay")
     private int totalPay; // 총급여(월급)
