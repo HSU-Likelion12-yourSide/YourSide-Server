@@ -12,9 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface LikesRepository extends JpaRepository<Likes, Long> {
-    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Likes l WHERE l.user.id = :userId AND l.comment.id = :commentId")
-    boolean existsByUserIdAndCommentId(@Param("userId") Long userId, @Param("commentId") Long commentId);
-
     Optional<Likes> findByUserAndComment(User user, Comment comment);
 
 }
