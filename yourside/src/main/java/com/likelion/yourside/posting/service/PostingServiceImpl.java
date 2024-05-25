@@ -1,8 +1,11 @@
 package com.likelion.yourside.posting.service;
 
+import com.likelion.yourside.bookmark.repository.BookmarkRepository;
+import com.likelion.yourside.domain.Bookmark;
 import com.likelion.yourside.domain.Posting;
 import com.likelion.yourside.domain.User;
 import com.likelion.yourside.domain.Worksheet;
+import com.likelion.yourside.posting.dto.PostingBookmarkRequestDto;
 import com.likelion.yourside.posting.dto.PostingCreateRequestDto;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
@@ -21,6 +24,7 @@ public class PostingServiceImpl implements PostingService{
     private final PostingRepository postingRepository;
     private final UserRepository userRepository;
     private final WorksheetRepository worksheetRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     @Override
     public ResponseEntity<CustomAPIResponse<?>> createPosting(PostingCreateRequestDto postingCreateRequestDto) {
@@ -66,5 +70,91 @@ public class PostingServiceImpl implements PostingService{
                 .status(HttpStatus.CREATED)
                 .body(responseBody);
 
+    }
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> createOrDeleteBookmark(PostingBookmarkRequestDto postingBookmarkRequestDto) {
+        // 1. 존재하는 User인지 조회
+        Optional<User> foundUser = userRepository.findById(postingBookmarkRequestDto.getUserId());
+        if (foundUser.isEmpty()) {
+            // 1-1. data
+            // 1-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "해당하는 사용자가 존재하지 않습니다.");
+            // 1-3. responseEntity
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(responseBody);
+        }
+        User user = foundUser.get();
+        // 2. 존재하는 Posting인지 조회
+        Optional<Posting> foundPosting = postingRepository.findById(postingBookmarkRequestDto.getPostId());
+        if (foundPosting.isEmpty()) {
+            // 2-1. data
+            // 2-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "해당하는 게시글이 존재하지 않습니다.");
+            // 2-3. responseEntity
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(responseBody);
+        }
+        Posting posting = foundPosting.get();
+        // 3. 북마크 해제
+        if (postingBookmarkRequestDto.isBookmarked()) {
+            Optional<Bookmark> foundBookmark = bookmarkRepository.findByUserAndPosting(user, posting);
+            // 3-1. 북마크 존재 여부
+            if (foundBookmark.isEmpty()) {
+                // 3-1-1. data
+                // 3-1-2. responseBody
+                CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "해당하는 북마크가 존재하지 않습니다.");
+                // 3-1-3. ResponseEntity
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(responseBody);
+            }
+            // 3-2. 북마크 해제
+            Bookmark bookmark = foundBookmark.get();
+            bookmarkRepository.delete(bookmark);
+            // 3-3. Posting 북마크 수 감소
+            posting.changeBookmarkCount(false);
+            postingRepository.save(posting);
+            // 3-4. 응답
+            // 3-4-1. data
+            // 3-4-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "해당 게시글이 책갈피에서 삭제되었습니다.");
+            // 3-4-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(responseBody);
+        }
+        // 4. 북마크 등록
+        else{
+            // 4-1. 북마크 존재하는지 확인
+            Optional<Bookmark> foundBookmark = bookmarkRepository.findByUserAndPosting(user, posting);
+            if (foundBookmark.isPresent()) {
+                // 4-1-1. data
+                // 4-1-2. responseBody
+                CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.CONFLICT.value(), "이미 존재하는 북마크입니다.");
+                // 4-1-3. ResponseEntity
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body(responseBody);
+            }
+            // 4-2. 북마크 등록
+            Bookmark bookmark = Bookmark.builder()
+                    .posting(posting)
+                    .user(user)
+                    .build();
+            bookmarkRepository.save(bookmark);
+            // 4-3. Posting 북마크 수 증가
+            posting.changeBookmarkCount(true);
+            postingRepository.save(posting);
+            // 4-4. 응답
+            // 4-4-1. data
+            // 4-4-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.CREATED.value(), "해당 게시글이 책갈피에 추가되었습니다.");
+            // 4-4-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(responseBody);
+        }
     }
 }

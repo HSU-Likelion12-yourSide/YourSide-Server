@@ -23,4 +23,9 @@ public class Posting extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "worksheet_id")
     private Worksheet worksheet;
+
+    public void changeBookmarkCount(boolean isIncrease) {
+        if(isIncrease) this.bookmarkCount += 1;
+        else this.bookmarkCount -= 1;
+    }
 }
