@@ -20,9 +20,13 @@ public class MypageController {
     public ResponseEntity<CustomAPIResponse<?>> updateUserIsExpert(@PathVariable("user_id") Long userId) {
         return mypageService.updateUserIsExpert(userId);
     }
-
     @GetMapping("/list/worksheet/{user_id}")
     public ResponseEntity<CustomAPIResponse<?>> getWorksheetList(@PathVariable("user_id") Long userId) {
         return mypageService.getWorksheetList(userId);
     }
+    @GetMapping("/list/posting/{user_id}")
+    public ResponseEntity<CustomAPIResponse<?>> getPostingList(@PathVariable("user_id") Long userId) {
+        return mypageService.getPostingList(userId);
+    }
+
 }
