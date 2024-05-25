@@ -1,10 +1,9 @@
 package com.likelion.yourside.myPage.service;
 
 import com.likelion.yourside.bookmark.repository.BookmarkRepository;
-import com.likelion.yourside.domain.Bookmark;
-import com.likelion.yourside.domain.Posting;
-import com.likelion.yourside.domain.User;
-import com.likelion.yourside.domain.Worksheet;
+import com.likelion.yourside.comment.repository.CommentRepository;
+import com.likelion.yourside.domain.*;
+import com.likelion.yourside.myPage.dto.MypageGetcommentlistResponseDto;
 import com.likelion.yourside.myPage.dto.MypageGetpostinglistResponseDto;
 import com.likelion.yourside.myPage.dto.MypageGetuserinfoResponseDto;
 import com.likelion.yourside.myPage.dto.MypageGetworksheetlistResponseDto;
@@ -27,7 +26,9 @@ public class MypageServiceImpl implements MypageService{
     private final UserRepository userRepository;
     private final WorksheetRepository worksheetRepository;
     private final PostingRepository postingRepository;
+    private final CommentRepository commentRepository;
     private final BookmarkRepository bookmarkRepository;
+
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getUserInfo(Long userId) {
         // 1. user 존재하는지 조회
@@ -49,7 +50,8 @@ public class MypageServiceImpl implements MypageService{
         List<Posting> postingList = postingRepository.findALlByUser(user);
         int postingCount = postingList.size();
         // 4. 답변 개수 조회
-        int commentCount = 0;
+        List<Comment> commentList = commentRepository.findAllByUser(user);
+        int commentCount = commentList.size();
         // 5. 응답
         // 5-1. data
         MypageGetuserinfoResponseDto data = MypageGetuserinfoResponseDto.builder()
@@ -198,5 +200,41 @@ public class MypageServiceImpl implements MypageService{
                 .status(HttpStatus.OK)
                 .body(responseBody);
 
+    }
+
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> getCommentList(Long userId) {
+        // 1. User 존재 여부 확인
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (foundUser.isEmpty()) {
+            // 1-1. data
+            // 1-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "일치하는 사용자가 없습니다.");
+            // 1-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(responseBody);
+        }
+        User user = foundUser.get();
+        // 2. 응답
+        // 2-1. data
+        List<Comment> commentList = commentRepository.findAllByUser(user);
+        List<MypageGetcommentlistResponseDto> data = new ArrayList<>();
+        for (Comment comment : commentList) {
+            Posting posting = postingRepository.findById(comment.getPosting().getId()).get();
+            MypageGetcommentlistResponseDto responseDto = MypageGetcommentlistResponseDto.builder()
+                    .commentId(comment.getId())
+                    .postingTitle(posting.getTitle())
+                    .content(comment.getContent())
+                    .createdAt(comment.localDateTimeToString())
+                    .build();
+            data.add(responseDto);
+        }
+        // 2-2. responseBody
+        CustomAPIResponse<List<MypageGetcommentlistResponseDto>> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "내 답변 조회가 완료되었습니다.");
+        // 2-3. ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
     }
 }

@@ -28,6 +28,11 @@ public class MypageController {
     public ResponseEntity<CustomAPIResponse<?>> getPostingList(@PathVariable("user_id") Long userId) {
         return mypageService.getPostingList(userId);
     }
+
+    @GetMapping("/list/comment/{user_id}")
+    public ResponseEntity<CustomAPIResponse<?>> getCommentList(@PathVariable("user_id") Long userId) {
+        return mypageService.getCommentList(userId);
+    }
     @GetMapping("/list/bookmarks/{user_id}")
     public ResponseEntity<CustomAPIResponse<?>> getBookmarkList(@PathVariable("user_id") Long userId) {
         return mypageService.getBookmarkList(userId);
