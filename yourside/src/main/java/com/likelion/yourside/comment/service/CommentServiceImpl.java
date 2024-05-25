@@ -61,7 +61,7 @@ public class CommentServiceImpl implements CommentService{
         Posting posting = optionalPosting.get();
         List<Comment> comments = commentRepository.findAllbyPosting(posting);
 
-        //댓글 전체 조회 성공(댓글 존재하지 않음) : 200
+        //성공1. 댓글 존재하지 않는 경우 : 200
         if (comments.isEmpty()) {
             CustomAPIResponse<?> res = CustomAPIResponse.createFailWithoutData(HttpStatus.OK.value(), "작성한 댓글이 없습니다.");
             return ResponseEntity.ok(res);
@@ -74,18 +74,17 @@ public class CommentServiceImpl implements CommentService{
                     .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "게시글이 존재하지 않습니다."));
         }
 
-        List<CommentListDto.CommentResponse> commentResponses = new ArrayList<>();
         //List<Comment> -> List<CommentListDto.CommentResponse>작업
+        List<CommentListDto.CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : comments) {
-            Long userId = comment.getUser().getId();
-            Long commentId = comment.getId();
-            boolean isLiked = likesRepository.existsByUserIdAndCommentId(userId, commentId);
+            User user = comment.getUser();
+            Optional<Likes> foundLikes = likesRepository.findByUserAndComment(user, comment);
 
             commentResponses.add(CommentListDto.CommentResponse.builder()
-                    .nickname(comment.getUser().getNickname())
-                    .createdAt(comment.getCreatedAt().toLocalDate())
+                    .nickname(user.getNickname())
+                    .createdAt(comment.localDateTimeToString())
                     .content(comment.getContent())
-                    .isLiked(isLiked)
+                    .isLiked(foundLikes.isEmpty()? true : false)
                     .likes(comment.getLikes())
                     .build());
         }
@@ -94,7 +93,7 @@ public class CommentServiceImpl implements CommentService{
         CommentListDto.SearchCommentRes searchCommentRes = new CommentListDto.SearchCommentRes(commentResponses);
         CustomAPIResponse<CommentListDto.SearchCommentRes> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), searchCommentRes, "댓글 조회가 완료되었습니다.");
 
-        //댓글 전체 조회 성공(댓글 존재) : 200
+        //성공2. 댓글이 존재하는 경우 : 200
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(res);
@@ -130,8 +129,8 @@ public class CommentServiceImpl implements CommentService{
         comment.changeLikes(likesCount);
         commentRepository.save(comment); // 변경 사항 저장
 
-        //좋아요 추가 성공 : 201
-        CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.CREATED.value(), "해당 댓글을 좋아요 하셨습니다.");
+        //좋아요 추가 성공 : 200
+        CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "해당 댓글을 좋아요 하셨습니다.");
         return ResponseEntity.ok(res);
     }
 
@@ -174,8 +173,8 @@ public class CommentServiceImpl implements CommentService{
         comment.changeLikes(likesCount);
         commentRepository.save(comment); // 변경 사항 저장
 
-        //좋아요 삭제 성공 : 201
-        CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.CREATED.value(), "해당 댓글에 좋아요를 취소하셨습니다.");
+        //좋아요 삭제 성공 : 200
+        CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "해당 댓글에 좋아요를 취소하셨습니다.");
         return ResponseEntity.ok(res);
     }
 }
