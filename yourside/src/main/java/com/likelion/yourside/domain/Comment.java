@@ -14,6 +14,7 @@ public class Comment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // PK
     private String content; // 내용
+    // @JoinColumn(name = "likes_count") 수정하면 좋을 듯
     private int likes; // 좋아요 수
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -21,4 +22,8 @@ public class Comment extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "posting_id")
     private Posting posting;
+
+    public void changeLikes(int likes) {
+        this.likes = likes;
+    }
 }
