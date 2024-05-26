@@ -9,6 +9,6 @@ public interface PostingService {
     ResponseEntity<CustomAPIResponse<?>> createPosting(PostingCreateResponseDto postingCreateResponseDto);
     ResponseEntity<CustomAPIResponse<?>> createOrDeleteBookmark(PostingBookmarkRequestDto postingBookmarkRequestDto);
     ResponseEntity<CustomAPIResponse<?>> getAllPosting();
-
     ResponseEntity<CustomAPIResponse<?>> getPopularPosting(int postingType);
+    ResponseEntity<CustomAPIResponse<?>> getOnePosting(Long postingId);
 }
