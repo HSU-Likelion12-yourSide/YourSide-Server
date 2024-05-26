@@ -164,7 +164,7 @@ public class CommentServiceImpl implements CommentService{
         if (optionalLikes.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "좋아요를 하신 적이 없습니다."));
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "좋아요 하신 적이 없습니다."));
         }
 
         Likes likes = optionalLikes.get();
@@ -213,6 +213,49 @@ public class CommentServiceImpl implements CommentService{
 
         //싫어요 추가 성공 : 200
         CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "해당 댓글을 싫어요 하셨습니다.");
+        return ResponseEntity.ok(res);
+    }
+
+    //싫어요 삭제 --------------------------------------------------------------------------------------------------------------------------------------
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> removeDislikeFromComment(CommentDislikeDto.Req req) {
+        // DTO 검증 : API에는 없음(프론트 측에서 해서 줄 것. 그러나 이미 만들었으니 통신할 때 편하라고 남겨둠)
+        if (req.getUserId() == null || req.getCommentId() == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), "user_id와 comment_id는 필수 값입니다."));
+        }
+
+        //DB에 해당 댓글이 없는 경우 : 404
+        Optional<Comment> optionalComment = commentRepository.findById(req.getCommentId());
+        if (optionalComment.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "해당하는 댓글이 존재하지 않습니다."));
+        }
+
+        User user = userRepository.findById(req.getUserId()).orElseThrow();
+        Comment comment = optionalComment.get();
+
+        //Dislikes 스키마에서 user_id, comment_id를 가지는 레코드 삭제
+        Optional<Dislikes> optionalDislikes = dislikesRepository.findByUserAndComment(user, comment);//user, comment 필드를 가지는 likes 찾기
+
+        if (optionalDislikes.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "싫어요 하신 적이 없습니다."));
+        }
+
+        Dislikes dislikes = optionalDislikes.get();
+        dislikesRepository.delete(dislikes);
+
+        //Comment 스키마에 dislikes_count +1
+        int dislikesCount = comment.getDislikeCount() - 1;
+        comment.changeDislikeCount(dislikesCount);
+        commentRepository.save(comment); // 변경 사항 저장
+
+        //싫어요 삭제 성공 : 200
+        CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "해당 댓글에 싫어요를 취소하셨습니다.");
         return ResponseEntity.ok(res);
     }
 }
