@@ -20,6 +20,13 @@ public class User extends BaseEntity {
     private String nickname; // 별명
     @Column(name="is_expert")
     private boolean isExpert; // "노무사" 자격 유무
+    @Column(name="total_comments")
+    private Long totalComments; //누적 댓글
+    @Column(name="total_likes")
+    private Long totalLikes;//누적 좋아요
+    @Column(name = "delete_comments")
+    private Long deleteComments;//삭제된 답변 수
+    private int tier;//티어(일반인, 네편, 네편 메이트)
 
     public void changeIsExpert() {this.isExpert = true;}
 }
