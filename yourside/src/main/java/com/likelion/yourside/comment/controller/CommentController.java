@@ -1,6 +1,7 @@
 package com.likelion.yourside.comment.controller;
 
 import com.likelion.yourside.comment.dto.CommentCreateDto;
+import com.likelion.yourside.comment.dto.CommentDislikeDto;
 import com.likelion.yourside.comment.dto.CommentLikeDto;
 import com.likelion.yourside.comment.service.CommentService;
 import com.likelion.yourside.util.response.CustomAPIResponse;
@@ -19,11 +20,10 @@ public class CommentController {
     private final CommentService commentService;
 
     //댓글 작성
-    @PostMapping("/{posting_id}")
+    @PostMapping
     public ResponseEntity<CustomAPIResponse<?>> createComment(
-            @PathVariable("posting_id") Long postingId,
             @RequestBody CommentCreateDto.Req req) {
-        ResponseEntity<CustomAPIResponse<?>> result = commentService.createComment(postingId, req);
+        ResponseEntity<CustomAPIResponse<?>> result = commentService.createComment(req);
         return result;
     }
 
@@ -48,6 +48,14 @@ public class CommentController {
     public ResponseEntity<CustomAPIResponse<?>> removeLikes(
             @RequestBody CommentLikeDto.Req req) {
         ResponseEntity<CustomAPIResponse<?>> result = commentService.removeLikeFromComment(req);
+        return result;
+    }
+
+    //댓글에 싫어요 추가
+    @PostMapping("/dislikes")
+    public ResponseEntity<CustomAPIResponse<?>> addDislikes(
+            @RequestBody CommentDislikeDto.Req req) {
+        ResponseEntity<CustomAPIResponse<?>> result = commentService.addDislikeToComment(req);
         return result;
     }
 }

@@ -29,4 +29,8 @@ public class Comment extends BaseEntity {
     public void changeLikeCount(int likeCount) {
         this.likeCount = likeCount;
     }
+    public void changeDislikeCount(int dislikeCount) {
+        this.dislikeCount = dislikeCount;
+    }
+
 }
