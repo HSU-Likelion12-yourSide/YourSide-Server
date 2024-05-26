@@ -12,4 +12,5 @@ public interface CommentService {
     ResponseEntity<CustomAPIResponse<?>> addLikeToComment(CommentLikeDto.Req req);
     ResponseEntity<CustomAPIResponse<?>> removeLikeFromComment(CommentLikeDto.Req req);
     ResponseEntity<CustomAPIResponse<?>> addDislikeToComment(CommentDislikeDto.Req req);
+    ResponseEntity<CustomAPIResponse<?>> removeDislikeFromComment(CommentDislikeDto.Req req);
 }

@@ -58,4 +58,12 @@ public class CommentController {
         ResponseEntity<CustomAPIResponse<?>> result = commentService.addDislikeToComment(req);
         return result;
     }
+
+    //댓글에 싫어요 해제
+    @DeleteMapping("/dislikes")
+    public ResponseEntity<CustomAPIResponse<?>> removeDislikes(
+            @RequestBody CommentDislikeDto.Req req) {
+        ResponseEntity<CustomAPIResponse<?>> result = commentService.removeDislikeFromComment(req);
+        return result;
+    }
 }
