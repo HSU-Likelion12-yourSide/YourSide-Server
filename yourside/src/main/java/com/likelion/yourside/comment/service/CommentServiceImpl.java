@@ -244,6 +244,26 @@ public class CommentServiceImpl implements CommentService{
 
             //Comment 스키마에 dislikes_count +1
             int dislikesCount = comment.getDislikeCount() + 1;
+
+            //dislikes_count가 50 이상일 시 해당 댓글 삭제
+            if (dislikesCount >= 50) {
+                commentRepository.delete(comment);
+
+                //delete_comments가 10 이상일 시 User의 Tier을 일반인으로 변경
+                Long deleteComments = user.addDeleteComments();
+                if (deleteComments >= 10) {
+                    user.demoteToOrdinaryPerson();
+
+                    CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "삭제된 댓글이 10개가 되어 일반인으로 강등되었습니다.");
+                    user.resetDeleteComments(); //삭제된 댓글 개수 초기화
+                    return ResponseEntity.ok(res);
+                }
+
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "싫어요가 일정 수준을 넘어, 댓글이 삭제되었습니다."));
+            }
+
             comment.changeDislikeCount(dislikesCount);
             commentRepository.save(comment); // 변경 사항 저장
 

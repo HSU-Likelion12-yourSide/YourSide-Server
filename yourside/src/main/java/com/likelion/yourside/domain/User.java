@@ -26,7 +26,21 @@ public class User extends BaseEntity {
     private Long totalLikes;//누적 좋아요
     @Column(name = "delete_comments")
     private Long deleteComments;//삭제된 답변 수
-    private int tier;//티어(일반인, 네편, 네편 메이트)
+    private int tier;//티어(일반인 : 0, 네편 : 1, 네편 메이트 : 2)
 
     public void changeIsExpert() {this.isExpert = true;}
+
+    public Long addDeleteComments(){
+        deleteComments++;
+        return deleteComments;
+    }
+
+    public void demoteToOrdinaryPerson() {
+        tier = 0;
+    }
+
+    public void resetDeleteComments() {
+        this.deleteComments = 0L;
+    }
+
 }
