@@ -35,35 +35,19 @@ public class CommentController {
         return result;
     }
 
-    //댓글에 좋아요 추가
+    //댓글에 좋아요 추가 / 해제
     @PostMapping("/likes")
-    public ResponseEntity<CustomAPIResponse<?>> addLikes(
+    public ResponseEntity<CustomAPIResponse<?>> addOrDeleteLikes(
             @RequestBody CommentLikeDto.Req req) {
-        ResponseEntity<CustomAPIResponse<?>> result = commentService.addLikeToComment(req);
+        ResponseEntity<CustomAPIResponse<?>> result = commentService.addLikeOrDelete(req);
         return result;
     }
 
-    //댓글에 좋아요 해제
-    @DeleteMapping("/likes")
-    public ResponseEntity<CustomAPIResponse<?>> removeLikes(
-            @RequestBody CommentLikeDto.Req req) {
-        ResponseEntity<CustomAPIResponse<?>> result = commentService.removeLikeFromComment(req);
-        return result;
-    }
-
-    //댓글에 싫어요 추가
+    //댓글에 싫어요 추가 / 해제
     @PostMapping("/dislikes")
-    public ResponseEntity<CustomAPIResponse<?>> addDislikes(
+    public ResponseEntity<CustomAPIResponse<?>> addOrDeleteDislikes(
             @RequestBody CommentDislikeDto.Req req) {
-        ResponseEntity<CustomAPIResponse<?>> result = commentService.addDislikeToComment(req);
-        return result;
-    }
-
-    //댓글에 싫어요 해제
-    @DeleteMapping("/dislikes")
-    public ResponseEntity<CustomAPIResponse<?>> removeDislikes(
-            @RequestBody CommentDislikeDto.Req req) {
-        ResponseEntity<CustomAPIResponse<?>> result = commentService.removeDislikeFromComment(req);
+        ResponseEntity<CustomAPIResponse<?>> result = commentService.addDislikeOrDelete(req);
         return result;
     }
 }

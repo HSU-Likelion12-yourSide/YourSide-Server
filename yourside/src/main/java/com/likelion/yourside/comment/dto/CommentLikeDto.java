@@ -17,6 +17,8 @@ public class CommentLikeDto {
         private Long userId; //사용자 ID
         @JsonProperty("comment_id")
         private Long commentId; //댓글 ID
+        @JsonProperty("is_liked")
+        private boolean isLiked; //좋아요 여부
 
         public Likes toEntity(User user, Comment comment){
             return Likes.builder()
