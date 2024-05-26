@@ -17,6 +17,8 @@ public class Comment extends BaseEntity {
     private String content; // 내용
     @Column(name = "like_count")
     private int likeCount; // 좋아요 수
+    @Column(name = "dislike_count")
+    private int dislikeCount; // 싫어요 수
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

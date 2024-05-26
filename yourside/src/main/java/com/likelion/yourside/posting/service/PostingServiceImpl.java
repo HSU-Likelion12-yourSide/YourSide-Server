@@ -8,6 +8,7 @@ import com.likelion.yourside.domain.Worksheet;
 import com.likelion.yourside.posting.dto.PostingBookmarkRequestDto;
 import com.likelion.yourside.posting.dto.PostingCreateResponseDto;
 import com.likelion.yourside.posting.dto.PostingListDto;
+import com.likelion.yourside.posting.dto.PostingPopularListDto;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
@@ -17,9 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +29,9 @@ public class PostingServiceImpl implements PostingService{
     private final BookmarkRepository bookmarkRepository;
 
     @Override
-    public ResponseEntity<CustomAPIResponse<?>> createPosting(PostingCreateResponseDto postingCreateRequestDto) {
+    public ResponseEntity<CustomAPIResponse<?>> createPosting(PostingCreateResponseDto postingCreateResponseDto) {
         // 1. 사용자 존재 여부 확인
-        Optional<User> foundUser = userRepository.findById(postingCreateRequestDto.getUserId());
+        Optional<User> foundUser = userRepository.findById(postingCreateResponseDto.getUserId());
         if (foundUser.isEmpty()) {
             // 1-1. data
             // 1-2. responseBody
@@ -44,7 +43,7 @@ public class PostingServiceImpl implements PostingService{
         }
         User user = foundUser.get();
         // 2. 선택한 근로 결과지 존재 여부 확인
-        Optional<Worksheet> foundWorksheet = worksheetRepository.findById(postingCreateRequestDto.getWorksheetId());
+        Optional<Worksheet> foundWorksheet = worksheetRepository.findById(postingCreateResponseDto.getWorksheetId());
         if (foundWorksheet.isEmpty()) {
             // 1-1. data
             // 1-2. responseBody
@@ -57,11 +56,12 @@ public class PostingServiceImpl implements PostingService{
         Worksheet worksheet = foundWorksheet.get();
         // 3. 저장
         Posting posting = Posting.builder()
-                .title(postingCreateRequestDto.getTitle())
-                .content(postingCreateRequestDto.getContent())
+                .title(postingCreateResponseDto.getTitle())
+                .content(postingCreateResponseDto.getContent())
                 .bookmarkCount(0)
                 .user(user)
                 .worksheet(worksheet)
+                .type(postingCreateResponseDto.getType())
                 .build();
         postingRepository.save(posting);
         // 4. 응답
@@ -189,4 +189,42 @@ public class PostingServiceImpl implements PostingService{
         CustomAPIResponse<List<PostingListDto.PostingResponse>> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), postingListResponseDtos, null);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> getPopularPosting(int type) {
+        List<Posting> postings = postingRepository.findByType(type);
+
+        //게시글이 존재하지 않는 경우
+        if (postings.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "게시글이 존재하지 않습니다."));
+        }
+
+        //sorting : bookmarks 기준으로
+        List<Posting> top3Postings = new ArrayList<>(postings);
+        Collections.sort(top3Postings, new Comparator<Posting>() {
+            @Override
+            public int compare(Posting o1, Posting o2) {
+                return Integer.compare(o2.getBookmarkCount(),o1.getBookmarkCount()); //내림차순으로 정렬
+            }
+        });
+        if (top3Postings.size() > 3) {
+            top3Postings = top3Postings.subList(0, 3);
+        }
+
+        //반환
+        List<PostingPopularListDto.PostingResponse> popularListResponseDto = new ArrayList<>();
+        for (Posting posting : top3Postings) {
+            popularListResponseDto.add(PostingPopularListDto.PostingResponse.builder()
+                    .title(posting.getTitle())
+                    .content(posting.getContent())
+                    .build());
+        }
+
+        //최종 데이터
+        CustomAPIResponse<List<PostingPopularListDto.PostingResponse>> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), popularListResponseDto, "인기 게시글 조회 완료되었습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
 }

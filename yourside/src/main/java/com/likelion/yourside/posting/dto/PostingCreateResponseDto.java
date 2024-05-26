@@ -13,4 +13,5 @@ public class PostingCreateResponseDto {
     private Long worksheetId;
     private String title;
     private String content;
+    private int type;
 }

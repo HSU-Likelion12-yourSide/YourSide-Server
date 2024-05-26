@@ -24,6 +24,7 @@ public class Posting extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "worksheet_id")
     private Worksheet worksheet;
+    private int type; //게시글 종류
 
     public void changeBookmarkCount(boolean isIncrease) {
         if(isIncrease) this.bookmarkCount += 1;

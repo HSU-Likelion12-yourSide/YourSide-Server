@@ -19,9 +19,15 @@ public class PostingController {
         return postingService.getAllPosting();
     }
 
+    @GetMapping("/list/popular/{type}")
+    public ResponseEntity<CustomAPIResponse<?>> getPopularPosting(
+            @PathVariable int type) {
+        return postingService.getPopularPosting(type);
+    }
+
     @PostMapping
-    public ResponseEntity<CustomAPIResponse<?>> createPosting(@RequestBody PostingCreateResponseDto postingCreateRequestDto) {
-        return postingService.createPosting(postingCreateRequestDto);
+    public ResponseEntity<CustomAPIResponse<?>> createPosting(@RequestBody PostingCreateResponseDto postingCreateResponseDto) {
+        return postingService.createPosting(postingCreateResponseDto);
     }
     @PostMapping("/bookmarks")
     public ResponseEntity<CustomAPIResponse<?>> createOrDeleteBookmark(@RequestBody PostingBookmarkRequestDto postingBookmarkRequestDto) {
