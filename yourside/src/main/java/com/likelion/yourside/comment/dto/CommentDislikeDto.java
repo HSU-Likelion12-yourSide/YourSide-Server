@@ -18,7 +18,7 @@ public class CommentDislikeDto {
         private Long userId; //사용자 ID
         @JsonProperty("comment_id")
         private Long commentId; //댓글 ID
-        @JsonProperty("is_liked")
+        @JsonProperty("is_disliked")
         private boolean isDisliked; //싫어요 여부
 
         public Dislikes toEntity(User user, Comment comment){
