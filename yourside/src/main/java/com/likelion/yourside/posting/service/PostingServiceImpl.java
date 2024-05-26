@@ -5,10 +5,7 @@ import com.likelion.yourside.domain.Bookmark;
 import com.likelion.yourside.domain.Posting;
 import com.likelion.yourside.domain.User;
 import com.likelion.yourside.domain.Worksheet;
-import com.likelion.yourside.posting.dto.PostingBookmarkRequestDto;
-import com.likelion.yourside.posting.dto.PostingCreateResponseDto;
-import com.likelion.yourside.posting.dto.PostingListDto;
-import com.likelion.yourside.posting.dto.PostingPopularListDto;
+import com.likelion.yourside.posting.dto.*;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
@@ -28,6 +25,7 @@ public class PostingServiceImpl implements PostingService{
     private final WorksheetRepository worksheetRepository;
     private final BookmarkRepository bookmarkRepository;
 
+    // 게시글 추가 ------------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public ResponseEntity<CustomAPIResponse<?>> createPosting(PostingCreateResponseDto postingCreateResponseDto) {
         // 1. 사용자 존재 여부 확인
@@ -74,6 +72,8 @@ public class PostingServiceImpl implements PostingService{
                 .body(responseBody);
 
     }
+
+    //북마크 추가/해제 ----------------------------------------------------------------------------------------------------------------------
     @Override
     public ResponseEntity<CustomAPIResponse<?>> createOrDeleteBookmark(PostingBookmarkRequestDto postingBookmarkRequestDto) {
         // 1. 존재하는 User인지 조회
@@ -162,6 +162,7 @@ public class PostingServiceImpl implements PostingService{
 
     }
 
+    //모든 게시글 조회 ----------------------------------------------------------------------------------------
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getAllPosting() {
 
@@ -170,8 +171,8 @@ public class PostingServiceImpl implements PostingService{
         //게시글이 존재하지 않는 경우
         if (postings.isEmpty()) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "게시글이 존재하지 않습니다."));
+                    .status(HttpStatus.OK)
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.OK.value(), "게시글이 존재하지 않습니다."));
         }
 
         //반환
@@ -190,6 +191,7 @@ public class PostingServiceImpl implements PostingService{
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
+    //인기 게시글 조회 (상위 3개) ----------------------------------------------------------------------------------
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getPopularPosting(int type) {
         List<Posting> postings = postingRepository.findByType(type);
@@ -197,8 +199,8 @@ public class PostingServiceImpl implements PostingService{
         //게시글이 존재하지 않는 경우
         if (postings.isEmpty()) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "게시글이 존재하지 않습니다."));
+                    .status(HttpStatus.OK)
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.OK.value(), "게시글이 존재하지 않습니다."));
         }
 
         //sorting : bookmarks 기준으로
@@ -227,4 +229,33 @@ public class PostingServiceImpl implements PostingService{
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
+    //게시글 세부 조회 ----------------------------------------------------------------------------------------------
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> getOnePosting(Long postingId) {
+        Optional<Posting> optionalPosting = postingRepository.findById(postingId);
+
+        //404 : 게시글이 없는 경우
+        if (optionalPosting.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "삭제되었거나 존재하지 않는 게시글입니다."));
+        }
+
+        //변환
+        Posting posting = optionalPosting.get();
+        Optional<Bookmark> optionalBookmark = bookmarkRepository.findByUserAndPosting(posting.getUser(), posting);
+        boolean isBookmarked = optionalBookmark.isPresent();
+
+        PostingSearchResponseDto postingSearchResponseDto = PostingSearchResponseDto.builder()
+                .title(posting.getTitle())
+                .nickname(posting.getUser().getNickname())
+                .createdAt(posting.localDateTimeToString())
+                .content(posting.getContent())
+                .bookmarked(isBookmarked)
+                .worksheetId(posting.getWorksheet().getId())
+                .build();
+        //200 : 게시글 조회 성공
+        CustomAPIResponse<PostingSearchResponseDto> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), postingSearchResponseDto, "게시글 조회에 성공했습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
 }
