@@ -43,21 +43,12 @@ public class MypageServiceImpl implements MypageService{
                     .body(responseBody);
         }
         User user = foundUser.get();
-        // 2. 근로 결과지 개수 조회
-        List<Worksheet> worksheetList = worksheetRepository.findAllByUser(user);
-        int worksheetCount = worksheetList.size();
-        // 3. 네편 현답 개수 조회
-        List<Posting> postingList = postingRepository.findALlByUser(user);
-        int postingCount = postingList.size();
-        // 4. 답변 개수 조회
-        List<Comment> commentList = commentRepository.findAllByUser(user);
-        int commentCount = commentList.size();
         // 5. 응답
         // 5-1. data
         MypageGetuserinfoResponseDto data = MypageGetuserinfoResponseDto.builder()
-                .worksheetCount(worksheetCount)
-                .postingCount(postingCount)
-                .commentCount(commentCount)
+                .postingCount(user.getTotalPostings())
+                .commentCount(user.getTotalComments())
+                .likeCount(user.getTotalLikes())
                 .nickname(user.getNickname())
                 .build();
         // 5-2. responseBody

@@ -10,11 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class MypageGetuserinfoResponseDto {
-    @JsonProperty("worksheet_count")
-    private int worksheetCount;
     @JsonProperty("posting_count")
-    private int postingCount;
+    private Long postingCount;
     @JsonProperty("comment_count")
-    private int commentCount;
+    private Long commentCount;
+    @JsonProperty("like_count")
+    private Long likeCount;
     private String nickname;
 }
