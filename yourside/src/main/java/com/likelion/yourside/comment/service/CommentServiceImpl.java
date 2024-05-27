@@ -134,18 +134,19 @@ public class CommentServiceImpl implements CommentService{
         if (req.isLiked()) {
             //likes 스키마에서 user_id, comment_id를 가지는 레코드 삭제
             Optional<Likes> optionalLikes = likesRepository.findByUserAndComment(user, comment);//user, comment 필드를 가지는 likes 찾기
+
+            //400
             if (optionalLikes.isEmpty()) {
                 return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "좋아요 하신 적이 없습니다."));
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(CustomAPIResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), "좋아요 하신 적이 없습니다."));
             }
 
             Likes likes = optionalLikes.get();
             likesRepository.delete(likes);
 
             //Comment 스키마에 likes_count +1
-            int likesCount = comment.getLikeCount() - 1;
-            comment.changeLikeCount(likesCount);
+            comment.addLikeCount();
             commentRepository.save(comment); // 변경 사항 저장
 
             //좋아요 삭제 성공 : 200
@@ -156,10 +157,10 @@ public class CommentServiceImpl implements CommentService{
             Optional<Likes> optionalLikes = likesRepository.findByUserAndComment(user, comment);//user, comment 필드를 가지는 likes 찾기
 
             //이미 좋아요를 누른 경우
-            if(!(optionalLikes.isEmpty())) {
+            if(optionalLikes.isPresent()) {
                 return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "이미 좋아요 하셨습니다."));
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(CustomAPIResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), "이미 좋아요 하셨습니다."));
             }
 
             //likes 스키마에 user_id, comment_id를 가지는 레코드 추가
@@ -167,8 +168,7 @@ public class CommentServiceImpl implements CommentService{
             likesRepository.save(likes);
 
             //Comment 스키마에 likes_count +1
-            int likesCount = comment.getLikeCount() + 1;
-            comment.changeLikeCount(likesCount);
+            comment.addLikeCount();
             commentRepository.save(comment); // 변경 사항 저장
 
             //좋아요 추가 성공 : 200
@@ -210,18 +210,19 @@ public class CommentServiceImpl implements CommentService{
         if (req.isDisliked()) {
             //dislikes 스키마에서 user_id, comment_id를 가지는 레코드 삭제
             Optional<Dislikes> optionalDislikes = dislikesRepository.findByUserAndComment(user, comment);//user, comment 필드를 가지는 dislikes 찾기
+
+            //400
             if (optionalDislikes.isEmpty()) {
                 return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "싫어요 하신 적이 없습니다."));
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(CustomAPIResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), "싫어요 하신 적이 없습니다."));
             }
 
             Dislikes dislikes = optionalDislikes.get();
             dislikesRepository.delete(dislikes);
 
             //Comment 스키마에 dislikes_count +1
-            int dislikesCount = comment.getDislikeCount() - 1;
-            comment.changeLikeCount(dislikesCount);
+            comment.addLikeCount();
             commentRepository.save(comment); // 변경 사항 저장
 
             //싫어요 삭제 성공 : 200
@@ -231,25 +232,47 @@ public class CommentServiceImpl implements CommentService{
         }else{ //싫어요가 눌려있지 않으면 -> 싫어요 추가
             Optional<Dislikes> optionalDislikes = dislikesRepository.findByUserAndComment(user, comment);//user, comment 필드를 가지는 dislikes 찾기
 
-            //이미 싫어요를 누른 경우
-            if(!(optionalDislikes.isEmpty())) {
+            //400 : 이미 싫어요를 누른 경우
+            if(optionalDislikes.isPresent()) {
                 return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "이미 싫어요 하셨습니다."));
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(CustomAPIResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), "이미 싫어요 하셨습니다."));
+            }
+
+            //Comment 스키마에 dislikes_count + 1
+            comment.addDislikeCount();
+
+            //dislikes_count가 50 이상일 시 해당 댓글 삭제
+            if ( comment.getDislikeCount() >= 50) {
+                User commentWriter = comment.getUser();
+                commentWriter.addDeleteComments();
+                commentRepository.delete(comment);
+
+                //delete_comments가 10 이상일 시 User의 Tier을 일반인으로 변경
+                if ( commentWriter.getDeleteComments()>= 10) {
+                    commentWriter.demoteToOrdinaryPerson(); //일반인으로 강등
+                    commentWriter.resetDeleteComments(); //삭제된 댓글 개수 초기화
+                    userRepository.save(commentWriter); // User 변경 사항 저장
+
+                    //200 : 일반인으로 강등
+                    CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "싫어요가 일정 수준을 넘어, 댓글이 삭제되었습니다. (댓글 작성자의) 삭제된 댓글이 10개가 되어 일반인으로 강등되었습니다.");
+                    return ResponseEntity.ok(res);
+                }
+
+                userRepository.save(commentWriter); // User 변경 사항 저장
+                CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "싫어요가 일정 수준을 넘어, 댓글이 삭제되었습니다.");
+                return ResponseEntity.ok(res);
             }
 
             //Dislikes 스키마에 user_id, comment_id를 가지는 레코드 추가
             Dislikes dislikes = req.toEntity(user, comment);
             dislikesRepository.save(dislikes);
 
-            //Comment 스키마에 dislikes_count +1
-            int dislikesCount = comment.getDislikeCount() + 1;
-            comment.changeDislikeCount(dislikesCount);
             commentRepository.save(comment); // 변경 사항 저장
 
             //싫어요 추가 성공 : 200
             CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "해당 댓글을 싫어요 하셨습니다.");
             return ResponseEntity.ok(res);
-        }    }
-
+        }
+    }
 }
