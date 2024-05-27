@@ -49,6 +49,10 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = req.toEntity(posting,req, user);
         commentRepository.save(comment);
 
+        // User 답변 총 개수 증가
+        user.increaseTotalComments();
+        userRepository.save(user);
+
         //댓글 작성 성공 : 201
         CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.CREATED.value(),  "댓글이 작성되었습니다.");
         return ResponseEntity.ok(res);
