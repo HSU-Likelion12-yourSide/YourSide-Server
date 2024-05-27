@@ -254,7 +254,7 @@ public class CommentServiceImpl implements CommentService{
                     userRepository.save(user); // User 변경 사항 저장
 
                     //200 : 일반인으로 강등
-                    CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "삭제된 댓글이 10개가 되어 일반인으로 강등되었습니다.");
+                    CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "싫어요가 일정 수준을 넘어, 댓글이 삭제되었습니다. 삭제된 댓글이 10개가 되어 일반인으로 강등되었습니다.");
                     return ResponseEntity.ok(res);
                 }
 
