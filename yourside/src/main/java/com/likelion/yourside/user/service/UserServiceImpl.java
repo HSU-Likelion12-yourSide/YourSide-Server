@@ -39,6 +39,9 @@ public class UserServiceImpl implements UserService{
                 .name(signUpDto.getName())
                 .nickname(signUpDto.getNickname())
                 .isExpert(false)
+                .totalPostings(0L)
+                .totalLikes(0L)
+                .totalComments(0L)
                 .build();
         userRepository.save(user);
         // 2-2. Response
