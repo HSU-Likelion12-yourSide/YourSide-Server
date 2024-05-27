@@ -244,21 +244,22 @@ public class CommentServiceImpl implements CommentService{
 
             //dislikes_count가 50 이상일 시 해당 댓글 삭제
             if ( comment.getDislikeCount() >= 50) {
-                user.addDeleteComments();
+                User commentWriter = comment.getUser();
+                commentWriter.addDeleteComments();
                 commentRepository.delete(comment);
 
                 //delete_comments가 10 이상일 시 User의 Tier을 일반인으로 변경
-                if ( user.getDeleteComments()>= 10) {
-                    user.demoteToOrdinaryPerson(); //일반인으로 강등
-                    user.resetDeleteComments(); //삭제된 댓글 개수 초기화
-                    userRepository.save(user); // User 변경 사항 저장
+                if ( commentWriter.getDeleteComments()>= 10) {
+                    commentWriter.demoteToOrdinaryPerson(); //일반인으로 강등
+                    commentWriter.resetDeleteComments(); //삭제된 댓글 개수 초기화
+                    userRepository.save(commentWriter); // User 변경 사항 저장
 
                     //200 : 일반인으로 강등
-                    CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "싫어요가 일정 수준을 넘어, 댓글이 삭제되었습니다. 삭제된 댓글이 10개가 되어 일반인으로 강등되었습니다.");
+                    CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "싫어요가 일정 수준을 넘어, 댓글이 삭제되었습니다. (댓글 작성자의) 삭제된 댓글이 10개가 되어 일반인으로 강등되었습니다.");
                     return ResponseEntity.ok(res);
                 }
 
-                userRepository.save(user); // User 변경 사항 저장
+                userRepository.save(commentWriter); // User 변경 사항 저장
                 CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "싫어요가 일정 수준을 넘어, 댓글이 삭제되었습니다.");
                 return ResponseEntity.ok(res);
             }
