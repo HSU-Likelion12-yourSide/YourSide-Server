@@ -26,12 +26,9 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "posting_id")
     private Posting posting;
 
-    public void addLikeCount(){
-        likeCount++;}
+    public void addLikeCount() {this.likeCount += 1;}
+    public void subtractLikeCount() {this.likeCount -= 1;}
 
-    public void addDislikeCount() {
-        dislikeCount++;
-
-    }
-
+    public void addDislikeCount() {this.dislikeCount += 1;}
+    public void subtractDisLikeCount() {this.dislikeCount -= 1;}
 }
