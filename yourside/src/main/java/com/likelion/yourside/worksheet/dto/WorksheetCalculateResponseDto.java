@@ -11,35 +11,37 @@ import lombok.Setter;
 @Builder
 public class WorksheetCalculateResponseDto {
     @JsonProperty("over_five")
-    private boolean overFive;
+    private boolean overFive;       // 5인 이상 사업장 여부
     @JsonProperty("week_work")
-    private int weekWork;
+    private int weekWork;           // 주 근로 시간
+    @JsonProperty("week_money")
+    private int weekMoney;          // 주휴 수당
     @JsonProperty("night_work")
-    private int nightWork;
+    private int nightWork;          // 야간 근로 시간
     @JsonProperty("night_money")
-    private int nightMoney;
+    private int nightMoney;         // 야간 근로 수당
     @JsonProperty("overtime_work")
-    private int overtimeWork;
+    private int overtimeWork;       // 연장 근로 시간
     @JsonProperty("overtime_money")
-    private int overtimeMoney;
+    private int overtimeMoney;      // 연장 근로 수당
     @JsonProperty("holiday_work")
-    private int holidayWork;
+    private int holidayWork;        // 휴일 근로 시간
     @JsonProperty("holiday_money")
-    private int holidayMoney;
+    private int holidayMoney;       // 휴일 근로 수당
     @JsonProperty("major_insurance")
-    private boolean majorInsurance;
+    private boolean majorInsurance; // 4대 보험 발생 여부
     @JsonProperty("income_tax")
-    private boolean incomeTax;
+    private boolean incomeTax;      // 소득세 발생 여부
     @JsonProperty("total_pay")
-    private int totalPay;
+    private int totalPay;           // 월급
     @JsonProperty("extra_pay")
-    private boolean extraPay;
+    private boolean extraPay;       // 가산 수당 발생 여부 == 5인 이상 사업장 여부
     @JsonProperty("week_pay")
-    private boolean weekPay;
+    private boolean weekPay;        // 주휴 수당 발생 여부
     @JsonProperty("night_pay")
-    private boolean nightPay;
+    private boolean nightPay;       // 야간 수당 발생 여부
     @JsonProperty("overtime_pay")
-    private boolean overtimePay;
+    private boolean overtimePay;    // 연장 근로 수당 발생 여부
     @JsonProperty("holiday_pay")
-    private boolean holidayPay;
+    private boolean holidayPay;     // 휴일 근로 수당 발생 여부
 }

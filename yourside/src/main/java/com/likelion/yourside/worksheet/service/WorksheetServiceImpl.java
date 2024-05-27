@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -157,8 +155,121 @@ public class WorksheetServiceImpl implements WorksheetService{
 
     @Override
     public ResponseEntity<CustomAPIResponse<?>> calculate(WorksheetCalculateRequestDto worksheetCalculateRequestDto) {
-        // 1. 주휴 수당
-        // 2.
-        return null;
+        // 수당 발생 여부
+        Map<String, Boolean> payMap = new HashMap<>();
+        // 수당
+        Map<String, Integer> moneyMap = new HashMap<>();
+        int hourPay = worksheetCalculateRequestDto.getHourPay();
+        int totalPay;
+        if (worksheetCalculateRequestDto.isOverFive()) {
+            // 1. 주휴 수당
+            int weekWork = worksheetCalculateRequestDto.getWeekWork(); // 주 근로 시간
+            int weekMoney; // 주휴 수당
+            if (weekWork >= 15) { // 주 근로 시간 15시간 이상 -> 주휴 수당 발생
+                weekMoney = (int) ((weekWork * 0.4) * 8 * 4 * hourPay);
+                moneyMap.put("weekMoney", weekMoney);
+                payMap.put("weekPay", true);
+            } else { // 주휴 수당 X
+                weekMoney = 0;
+                moneyMap.put("weekMoney", weekMoney);
+                payMap.put("weekPay", false);
+            }
+            // 2. 연장 근로 수당
+            int overtimeWork = worksheetCalculateRequestDto.getOvertimeWork();
+            int overtimeMoney;
+            if (overtimeWork != 0) { // 연장 근로 수당 발생 O
+                overtimeMoney = (int) (overtimeWork * 0.5 * 4 * hourPay);
+                moneyMap.put("overtimeMoney", overtimeMoney);
+                payMap.put("overtimePay", true);
+            } else { // 연장 근로 수당 발생 X
+                overtimeMoney = 0;
+                moneyMap.put("overtimeMoney", overtimeMoney);
+                payMap.put("overtimeMoney", false);
+            }
+            // 3. 야간 근로 수당
+            int nightWork = worksheetCalculateRequestDto.getNightWork();
+            int nightMoney;
+            if (nightWork != 0) { // 야간 근로 수당 발생 O
+                nightMoney = (int) (nightWork * 0.5 * 4 * hourPay);
+                moneyMap.put("nightMoney", nightMoney);
+                payMap.put("nightPay", true);
+            } else { // 야간 근로 수당 발생 X
+                nightMoney = 0;
+                moneyMap.put("nightMoney", nightMoney);
+                payMap.put("nightPay", false);
+            }
+            // 4. 휴일 근로 수당
+            int holidayWork = worksheetCalculateRequestDto.getHolidayWork();
+            int holidayMoney;
+            if (holidayWork > 8) {
+                holidayMoney = holidayWork * hourPay;
+                moneyMap.put("holidayMoney", holidayMoney);
+                payMap.put("holidayPay", true);
+            } else if (holidayWork > 0) {
+                holidayMoney = (int) (holidayWork * hourPay * 0.5);
+                moneyMap.put("holidayMoney", holidayMoney);
+                payMap.put("holidayPay", true);
+            } else {
+                holidayMoney = 0;
+                moneyMap.put("holidayMoney", holidayMoney);
+                payMap.put("holidayPay", false);
+            }
+            totalPay = (int) (((hourPay * weekWork) * 4.34) + weekMoney + nightMoney + overtimeMoney + holidayMoney);
+        } else {
+            // 1. 주휴 수당
+            int weekWork = worksheetCalculateRequestDto.getWeekWork(); // 주 근로 시간
+            int weekMoney; // 주휴 수당
+            if (weekWork >= 15) { // 주 근로 시간 15시간 이상 -> 주휴 수당 발생
+                weekMoney = (int) ((weekWork * 0.4) * 8 * hourPay);
+                moneyMap.put("weekMoney", weekMoney);
+                payMap.put("weekPay", true);
+            } else { // 주휴 수당 X
+                weekMoney = 0;
+                moneyMap.put("weekMoney", weekMoney);
+                payMap.put("weekPay", false);
+            }
+            // 2. 연장 근로 수당 - 발생 X
+            int overtimeMoney = 0;
+            moneyMap.put("overtimeMoney", overtimeMoney);
+            payMap.put("overtimeMoney", false);
+            // 3. 야간 근로 수당 발생 X
+            int nightMoney = 0;
+            moneyMap.put("nightMoney", nightMoney);
+            payMap.put("nightPay", false);
+            // 4. 휴일 근로 수당 발생 X
+            int holidayMoney = 0;
+            moneyMap.put("holidayMoney", holidayMoney);
+            payMap.put("holidayPay", false);
+            totalPay = (int) (((hourPay * weekWork) * 4.34) + weekMoney + nightMoney + overtimeMoney + holidayMoney);
+        }
+        if(worksheetCalculateRequestDto.isMajorInsurance()) totalPay = (int) (totalPay * 0.9068);
+        else if(worksheetCalculateRequestDto.isIncomeTax()) totalPay = (int) (totalPay * 0.967);
+
+        // data
+        WorksheetCalculateResponseDto data = WorksheetCalculateResponseDto.builder()
+                .overFive(worksheetCalculateRequestDto.isOverFive())
+                .weekWork(worksheetCalculateRequestDto.getWeekWork())
+                .weekMoney(moneyMap.get("weekMoney"))
+                .nightWork(worksheetCalculateRequestDto.getNightWork())
+                .nightMoney(moneyMap.get("nightMoney"))
+                .overtimeWork(worksheetCalculateRequestDto.getOvertimeWork())
+                .overtimeMoney(moneyMap.get("overtimeMoney"))
+                .holidayWork(worksheetCalculateRequestDto.getHolidayWork())
+                .holidayMoney(moneyMap.get("holidayMoney"))
+                .majorInsurance(worksheetCalculateRequestDto.isMajorInsurance())
+                .incomeTax(worksheetCalculateRequestDto.isIncomeTax())
+                .totalPay(totalPay)
+                .extraPay(worksheetCalculateRequestDto.isOverFive())
+                .weekPay(payMap.get("weekPay"))
+                .nightPay(payMap.get("nightPay"))
+                .overtimePay(payMap.get("overtimePay"))
+                .holidayPay(payMap.get("holidayPay"))
+                .build();
+        // responseBody
+        CustomAPIResponse<WorksheetCalculateResponseDto> responseBody = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), data, "근로 결과지 계산이 완료되었습니다.");
+        // ResponseEntity
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
     }
 }

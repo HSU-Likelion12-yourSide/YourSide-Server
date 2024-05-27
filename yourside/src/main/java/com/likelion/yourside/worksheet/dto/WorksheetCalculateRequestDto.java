@@ -23,7 +23,7 @@ public class WorksheetCalculateRequestDto {
     @JsonProperty("holiday_work")
     private int holidayWork;            // 약정 휴일 근로 시간
     @JsonProperty("major_insurance")
-    private boolean majorInsurance;
+    private boolean majorInsurance;     // 4대 보험 발생 여부
     @JsonProperty("income_tax")
-    private boolean incomeTax;
+    private boolean incomeTax;          // 소득세 발생 여부
 }
