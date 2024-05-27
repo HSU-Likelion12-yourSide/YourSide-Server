@@ -22,6 +22,8 @@ public class User extends BaseEntity {
     private boolean isExpert; // "노무사" 자격 유무
     @Column(name="total_comments")
     private Long totalComments; // 누적 댓글
+    @Column(name="total_postings")
+    private Long totalPostings;
     @Column(name="total_likes")
     private Long totalLikes; // 누적 좋아요
     @Column(name = "delete_comments")
@@ -31,16 +33,17 @@ public class User extends BaseEntity {
     public void changeIsExpert() {
         this.isExpert = true;
     }
-
     public void addDeleteComments() {
         this.deleteComments = (this.deleteComments == null) ? 1 : this.deleteComments + 1;
     }
-
     public void demoteToOrdinaryPerson() {
         this.tier = 0;
     }
-
     public void resetDeleteComments() {
         this.deleteComments = 0;
     }
+
+    public void increaseTotalPostings() { this.totalPostings += 1; }
+    public void increaseTotalLikes() { this.totalLikes += 1; }
+    public void increaseTotalComments() { this.totalComments += 1; }
 }
