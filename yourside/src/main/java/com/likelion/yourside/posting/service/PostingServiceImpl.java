@@ -62,11 +62,14 @@ public class PostingServiceImpl implements PostingService{
                 .type(postingCreateResponseDto.getType())
                 .build();
         postingRepository.save(posting);
-        // 4. 응답
-        // 4-1. data
-        // 4-2. responseBody
+        // 4. User 게시글 Count 증가
+        user.increaseTotalPostings();
+        userRepository.save(user);
+        // 5. 응답
+        // 5-1. data
+        // 5-2. responseBody
         CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.CREATED.value(), "게시글이 등록되었습니다.");
-        // 4-3. ResponseEntity
+        // 5-3. ResponseEntity
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(responseBody);
