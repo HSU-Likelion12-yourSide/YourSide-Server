@@ -4,10 +4,7 @@ import com.likelion.yourside.domain.User;
 import com.likelion.yourside.domain.Worksheet;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
-import com.likelion.yourside.worksheet.dto.WorksheetGetAllListResponseDto;
-import com.likelion.yourside.worksheet.dto.WorksheetGetOneResponseDto;
-import com.likelion.yourside.worksheet.dto.WorksheetRegisterRequestDto;
-import com.likelion.yourside.worksheet.dto.WorksheetRegisterResponseDto;
+import com.likelion.yourside.worksheet.dto.*;
 import com.likelion.yourside.worksheet.repository.WorksheetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -156,5 +153,12 @@ public class WorksheetServiceImpl implements WorksheetService{
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(responseBody);
+    }
+
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> calculate(WorksheetCalculateRequestDto worksheetCalculateRequestDto) {
+        // 1. 주휴 수당
+        // 2.
+        return null;
     }
 }
