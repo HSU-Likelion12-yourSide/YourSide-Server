@@ -149,8 +149,8 @@ public class CommentServiceImpl implements CommentService{
             Likes likes = optionalLikes.get();
             likesRepository.delete(likes);
 
-            //Comment 스키마에 likes_count +1
-            comment.addLikeCount();
+            //Comment 스키마에 likes_count -1
+            comment.subtractLikeCount();
             commentRepository.save(comment); // 변경 사항 저장
 
             // User 좋아요 개수 감소
@@ -233,8 +233,8 @@ public class CommentServiceImpl implements CommentService{
             Dislikes dislikes = optionalDislikes.get();
             dislikesRepository.delete(dislikes);
 
-            //Comment 스키마에 dislikes_count +1
-            comment.addLikeCount();
+            //Comment 스키마에 dislikes_count -1
+            comment.subtractDisLikeCount();
             commentRepository.save(comment); // 변경 사항 저장
 
             //싫어요 삭제 성공 : 200
