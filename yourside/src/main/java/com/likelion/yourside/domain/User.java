@@ -21,26 +21,26 @@ public class User extends BaseEntity {
     @Column(name="is_expert")
     private boolean isExpert; // "노무사" 자격 유무
     @Column(name="total_comments")
-    private Long totalComments; //누적 댓글
+    private Long totalComments; // 누적 댓글
     @Column(name="total_likes")
-    private Long totalLikes;//누적 좋아요
+    private Long totalLikes; // 누적 좋아요
     @Column(name = "delete_comments")
-    private Long deleteComments;//삭제된 답변 수
-    private int tier;//티어(일반인 : 0, 네편 : 1, 네편 메이트 : 2)
+    private Integer deleteComments = 0; // 삭제된 답변 수
+    private int tier = 0; // 티어(일반인 : 0, 네편 : 1, 네편 메이트 : 2)
 
-    public void changeIsExpert() {this.isExpert = true;}
+    public void changeIsExpert() {
+        this.isExpert = true;
+    }
 
-    public Long addDeleteComments(){
-        deleteComments++;
-        return deleteComments;
+    public void addDeleteComments() {
+        this.deleteComments = (this.deleteComments == null) ? 1 : this.deleteComments + 1;
     }
 
     public void demoteToOrdinaryPerson() {
-        tier = 0;
+        this.tier = 0;
     }
 
     public void resetDeleteComments() {
-        this.deleteComments = 0L;
+        this.deleteComments = 0;
     }
-
 }
