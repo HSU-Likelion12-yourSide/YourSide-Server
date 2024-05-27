@@ -23,7 +23,7 @@ public class User extends BaseEntity {
     @Column(name="total_comments")
     private Long totalComments; // 누적 댓글
     @Column(name="total_postings")
-    private Long totalPostings;
+    private Long totalPostings; // 누적 게시글
     @Column(name="total_likes")
     private Long totalLikes; // 누적 좋아요
     @Column(name = "delete_comments")
@@ -45,5 +45,6 @@ public class User extends BaseEntity {
 
     public void increaseTotalPostings() { this.totalPostings += 1; }
     public void increaseTotalLikes() { this.totalLikes += 1; }
+    public void decreaseTotalLikes() { this.totalLikes -= 1; }
     public void increaseTotalComments() { this.totalComments += 1; }
 }

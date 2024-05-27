@@ -153,6 +153,10 @@ public class CommentServiceImpl implements CommentService{
             comment.addLikeCount();
             commentRepository.save(comment); // 변경 사항 저장
 
+            // User 좋아요 개수 감소
+            user.decreaseTotalLikes();
+            userRepository.save(user);
+
             //좋아요 삭제 성공 : 200
             CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "해당 댓글에 좋아요를 취소하셨습니다.");
             return ResponseEntity.ok(res);
@@ -174,6 +178,10 @@ public class CommentServiceImpl implements CommentService{
             //Comment 스키마에 likes_count +1
             comment.addLikeCount();
             commentRepository.save(comment); // 변경 사항 저장
+
+            // User 좋아요 개수 증가
+            user.increaseTotalLikes();
+            userRepository.save(user);
 
             //좋아요 추가 성공 : 200
             CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "해당 댓글을 좋아요 하셨습니다.");
