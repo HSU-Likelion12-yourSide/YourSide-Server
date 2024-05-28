@@ -4,6 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+application-secret.properties
 
 ### STS ###
 .apt_generated
@@ -211,4 +212,3 @@ Temporary Items
 *.icloud
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,macos
-application-secret.properties
