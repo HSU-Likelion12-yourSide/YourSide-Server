@@ -15,5 +15,5 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
     List<Posting> findALlByUser(User user);
 
     @Query("select p from Posting p where p.type = :type")
-    List<Posting> findByType(int type);
+    List<Posting> findAllByType(int type);
 }
