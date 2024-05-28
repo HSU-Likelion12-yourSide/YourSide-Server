@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="83232a9c-f4f5-4586-9e13-ed2262d8c9df" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yourside/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +59,7 @@
     "Gradle.yourside [:YoursideApplication.main()].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "deploy/112",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/user/Documents/LikeLion/deploy-repo",
     "애플리케이션.YoursideApplication.executor": "Run"
