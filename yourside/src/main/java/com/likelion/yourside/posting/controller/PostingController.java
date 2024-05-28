@@ -15,9 +15,11 @@ public class PostingController {
     private final PostingService postingService;
 
     //게시글 전체 조회
-    @GetMapping("/list")
-    public ResponseEntity<CustomAPIResponse<?>> getAllPosting() {
-        return postingService.getAllPosting();
+    @GetMapping("/list/{type}")
+    public ResponseEntity<CustomAPIResponse<?>> getAllPosting(
+            @PathVariable int type
+    ) {
+        return postingService.getAllPosting(type);
     }
 
     //인기 게시글 조회 (상위 3개)

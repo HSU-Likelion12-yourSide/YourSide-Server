@@ -167,9 +167,9 @@ public class PostingServiceImpl implements PostingService{
 
     //모든 게시글 조회 ----------------------------------------------------------------------------------------
     @Override
-    public ResponseEntity<CustomAPIResponse<?>> getAllPosting() {
+    public ResponseEntity<CustomAPIResponse<?>> getAllPosting(int type) {
 
-        List<Posting> postings = postingRepository.findAll();
+        List<Posting> postings = postingRepository.findAllByType(type);
 
         //게시글이 존재하지 않는 경우
         if (postings.isEmpty()) {
@@ -197,7 +197,7 @@ public class PostingServiceImpl implements PostingService{
     //인기 게시글 조회 (상위 3개) ----------------------------------------------------------------------------------
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getPopularPosting(int type) {
-        List<Posting> postings = postingRepository.findByType(type);
+        List<Posting> postings = postingRepository.findAllByType(type);
 
         //게시글이 존재하지 않는 경우
         if (postings.isEmpty()) {
