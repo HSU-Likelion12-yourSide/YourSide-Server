@@ -27,7 +27,7 @@ public class User extends BaseEntity {
     @Column(name="total_likes")
     private Long totalLikes; // 누적 좋아요
     @Column(name = "delete_comments")
-    private Integer deleteComments = 0; // 삭제된 답변 수
+    private Integer deleteComments; // 삭제된 답변 수
     private int tier = 0; // 티어(일반인 : 0, 네편 : 1, 네편 메이트 : 2)
 
     public void changeIsExpert() {
