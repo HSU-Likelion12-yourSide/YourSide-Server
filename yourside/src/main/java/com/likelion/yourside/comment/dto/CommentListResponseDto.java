@@ -3,10 +3,9 @@ package com.likelion.yourside.comment.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-public class CommentListDto {
+public class CommentListResponseDto {
 
     @Getter @Builder
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,8 +17,12 @@ public class CommentListDto {
         private String content;
         @JsonProperty("is_liked")
         private boolean liked;
+        @JsonProperty("is_disliked")
+        private boolean disliked;
         @JsonProperty("like_count")
         private Integer likeCount;
+        @JsonProperty("dislike_count")
+        private Integer dislikeCount;
     }
 
     @Getter @Setter
