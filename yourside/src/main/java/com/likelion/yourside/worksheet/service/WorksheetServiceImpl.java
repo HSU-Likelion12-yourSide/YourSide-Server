@@ -15,7 +15,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class WorksheetServiceImpl implements WorksheetService{
+public class WorksheetServiceImpl implements WorksheetService {
     private final WorksheetRepository worksheetRepository;
     private final UserRepository userRepository;
 
@@ -58,6 +58,7 @@ public class WorksheetServiceImpl implements WorksheetService{
                 .status(HttpStatus.CREATED)
                 .body(responseBody);
     }
+
     @Override
     public ResponseEntity<CustomAPIResponse<?>> share(Long worksheetId) {
         // 1. worksheet 있는지 조회
@@ -83,6 +84,7 @@ public class WorksheetServiceImpl implements WorksheetService{
                 .status(HttpStatus.OK)
                 .body(responseBody);
     }
+
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getAllList() {
         // 1. null 일 경우 처리
@@ -119,6 +121,7 @@ public class WorksheetServiceImpl implements WorksheetService{
                 .status(HttpStatus.OK)
                 .body(responseBody);
     }
+
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getOne(Long worksheetId) {
         // 1. worsheetId로 조회 실패
@@ -166,7 +169,7 @@ public class WorksheetServiceImpl implements WorksheetService{
             int weekWork = worksheetCalculateRequestDto.getWeekWork(); // 주 근로 시간
             int weekMoney; // 주휴 수당
             if (weekWork >= 15) { // 주 근로 시간 15시간 이상 -> 주휴 수당 발생
-                weekMoney = (int) ((weekWork * 0.4) * 8 * 4 * hourPay);
+                weekMoney = (int) ((weekWork * 0.025) * 8 * 4 * hourPay);
                 moneyMap.put("weekMoney", weekMoney);
                 payMap.put("weekPay", true);
             } else { // 주휴 수당 X
@@ -179,19 +182,19 @@ public class WorksheetServiceImpl implements WorksheetService{
             int overtimeMoney;
             if (overtimeWork != 0) { // 연장 근로 수당 발생 O
                 overtimeMoney = (int) (overtimeWork * 0.5 * 4 * hourPay);
-                moneyMap.put("overtimeMoney", overtimeMoney);
+                moneyMap.put("overtimeMoney", overtimeMoney * 3);
                 payMap.put("overtimePay", true);
             } else { // 연장 근로 수당 발생 X
                 overtimeMoney = 0;
                 moneyMap.put("overtimeMoney", overtimeMoney);
-                payMap.put("overtimeMoney", false);
+                payMap.put("overtimePay", false);
             }
             // 3. 야간 근로 수당
             int nightWork = worksheetCalculateRequestDto.getNightWork();
             int nightMoney;
             if (nightWork != 0) { // 야간 근로 수당 발생 O
                 nightMoney = (int) (nightWork * 0.5 * 4 * hourPay);
-                moneyMap.put("nightMoney", nightMoney);
+                moneyMap.put("nightMoney", nightMoney * 3);
                 payMap.put("nightPay", true);
             } else { // 야간 근로 수당 발생 X
                 nightMoney = 0;
@@ -203,11 +206,11 @@ public class WorksheetServiceImpl implements WorksheetService{
             int holidayMoney;
             if (holidayWork > 8) {
                 holidayMoney = holidayWork * hourPay;
-                moneyMap.put("holidayMoney", holidayMoney);
+                moneyMap.put("holidayMoney", holidayMoney * 2);
                 payMap.put("holidayPay", true);
             } else if (holidayWork > 0) {
                 holidayMoney = (int) (holidayWork * hourPay * 0.5);
-                moneyMap.put("holidayMoney", holidayMoney);
+                moneyMap.put("holidayMoney", holidayMoney * 3);
                 payMap.put("holidayPay", true);
             } else {
                 holidayMoney = 0;
@@ -220,7 +223,7 @@ public class WorksheetServiceImpl implements WorksheetService{
             int weekWork = worksheetCalculateRequestDto.getWeekWork(); // 주 근로 시간
             int weekMoney; // 주휴 수당
             if (weekWork >= 15) { // 주 근로 시간 15시간 이상 -> 주휴 수당 발생
-                weekMoney = (int) ((weekWork * 0.4) * 8 * hourPay);
+                weekMoney = (int) ((weekWork * 0.025) * 8 * hourPay);
                 moneyMap.put("weekMoney", weekMoney);
                 payMap.put("weekPay", true);
             } else { // 주휴 수당 X
@@ -231,7 +234,7 @@ public class WorksheetServiceImpl implements WorksheetService{
             // 2. 연장 근로 수당 - 발생 X
             int overtimeMoney = 0;
             moneyMap.put("overtimeMoney", overtimeMoney);
-            payMap.put("overtimeMoney", false);
+            payMap.put("overtimePay", false);
             // 3. 야간 근로 수당 발생 X
             int nightMoney = 0;
             moneyMap.put("nightMoney", nightMoney);
@@ -242,8 +245,8 @@ public class WorksheetServiceImpl implements WorksheetService{
             payMap.put("holidayPay", false);
             totalPay = (int) (((hourPay * weekWork) * 4.34) + weekMoney + nightMoney + overtimeMoney + holidayMoney);
         }
-        if(worksheetCalculateRequestDto.isMajorInsurance()) totalPay = (int) (totalPay * 0.9068);
-        else if(worksheetCalculateRequestDto.isIncomeTax()) totalPay = (int) (totalPay * 0.967);
+        if (worksheetCalculateRequestDto.isMajorInsurance()) totalPay = (int) (totalPay * 0.9068);
+        else if (worksheetCalculateRequestDto.isIncomeTax()) totalPay = (int) (totalPay * 0.967);
 
         // data
         WorksheetCalculateResponseDto data = WorksheetCalculateResponseDto.builder()
