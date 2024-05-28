@@ -22,8 +22,6 @@ public class CommentCreateDto {
         @NotBlank(message = "댓글의 내용을 입력해주세요.")
         private String content;
         @JsonProperty("is_liked")
-        private boolean isLiked;
-        private boolean isDisliked;
 
         public Comment toEntity(Posting posting, Req req ,User user){
 
