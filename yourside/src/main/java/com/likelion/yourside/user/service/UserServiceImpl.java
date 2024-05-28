@@ -42,6 +42,8 @@ public class UserServiceImpl implements UserService{
                 .totalPostings(0L)
                 .totalLikes(0L)
                 .totalComments(0L)
+                .deleteComments(0)
+                .tier(0)
                 .build();
         userRepository.save(user);
         // 2-2. Response
