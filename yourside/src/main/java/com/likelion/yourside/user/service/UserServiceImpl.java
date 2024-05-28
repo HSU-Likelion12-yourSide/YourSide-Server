@@ -167,4 +167,27 @@ public class UserServiceImpl implements UserService{
                 .status(HttpStatus.OK)
                 .body(responseBody);
     }
+
+    // ------------------------------------------------------------------------------------
+
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> addDummy(UserAddDummyDataRequestDto userAddDummyDataRequestDto) {
+        Optional<User> foundUser = userRepository.findById(userAddDummyDataRequestDto.getUserId());
+        User user = foundUser.get();
+        user.addDummy(
+                userAddDummyDataRequestDto.isExpert(),
+                userAddDummyDataRequestDto.getTotalComments(),
+                userAddDummyDataRequestDto.getTotalLikes(),
+                userAddDummyDataRequestDto.getTotalPostings(),
+                userAddDummyDataRequestDto.getDeleteComments(),
+                userAddDummyDataRequestDto.getTier()
+        );
+        userRepository.save(user);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(CustomAPIResponse.createSuccessWithoutData(
+                        HttpStatus.OK.value(),
+                        "Complete Add Dummy"
+                ));
+    }
 }
