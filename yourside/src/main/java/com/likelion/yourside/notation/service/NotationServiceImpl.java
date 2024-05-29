@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Builder
 public class NotationServiceImpl implements NotationService{
 
     private final NotationRepository notationRepository;
