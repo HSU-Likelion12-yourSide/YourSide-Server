@@ -28,7 +28,13 @@ public class CommentServiceImpl implements CommentService{
     //댓글 작성 -------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public ResponseEntity<CustomAPIResponse<?>> createComment(CommentCreateDto.Req req) {
-        User user = userRepository.findById(req.getUser_id()).orElseThrow();
+        Optional<User> optionalUser = userRepository.findById(req.getUser_id());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "해당 회원을 찾을 수 없습니다."));
+        }
+        User user = optionalUser.get();
 
         Optional<Posting> optionalPosting = postingRepository.findById(req.getPosting_id());
         //해당 게시글이 없는 경우 : 404

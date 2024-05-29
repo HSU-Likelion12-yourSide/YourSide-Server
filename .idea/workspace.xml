@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83232a9c-f4f5-4586-9e13-ed2262d8c9df" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/controller/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/controller/CommentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/dto/CommentCreateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/dto/CommentCreateDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/dto/CommentListDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/dto/CommentListResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/service/CommentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/service/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/service/CommentServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -60,14 +55,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-<component name="PropertiesComponent"><![CDATA[{
+  <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Gradle.yourside [:YoursideApplication.main()].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "deploy/112", // "fix/108"도 가능한 선택입니다.
+    "git-widget-placeholder": "feat/110",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/user/Documents/LikeLion/deploy-repo", // "C:/Users/user/Documents/LikeLion/YourSide-Server-main/YourSide-Server/yourside/src/main/java/com/likelion/yourside"도 가능한 선택입니다.
+    "last_opened_file_path": "C:/Users/user/Documents/LikeLion/deploy-repo",
     "애플리케이션.YoursideApplication.executor": "Run"
   }
 }]]></component>
