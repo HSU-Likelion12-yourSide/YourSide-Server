@@ -1,8 +1,5 @@
 package com.likelion.yourside.comment.service;
-import com.likelion.yourside.comment.dto.CommentCreateDto;
-import com.likelion.yourside.comment.dto.CommentDislikeDto;
-import com.likelion.yourside.comment.dto.CommentLikeDto;
-import com.likelion.yourside.comment.dto.CommentListDto;
+import com.likelion.yourside.comment.dto.*;
 import com.likelion.yourside.comment.repository.CommentRepository;
 import com.likelion.yourside.dislikes.DislikesRepository;
 import com.likelion.yourside.domain.*;
@@ -10,7 +7,6 @@ import com.likelion.yourside.likes.repository.LikesRepository;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
-import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Spliterator;
 
 @Service
 @RequiredArgsConstructor
@@ -60,8 +55,8 @@ public class CommentServiceImpl implements CommentService{
 
     //댓글 전체 조회 ---------------------------------------------------------------------------------------------------------------------------------
     @Override
-    public ResponseEntity<CustomAPIResponse<?>> getAllComment(Long postingId) {
-        Optional<Posting> optionalPosting = postingRepository.findById(postingId);
+    public ResponseEntity<CustomAPIResponse<?>> getAllComment(CommentListRequestDto.Req req) {
+        Optional<Posting> optionalPosting = postingRepository.findById(req.getPosting_id());
         Posting posting = optionalPosting.get();
         List<Comment> comments = commentRepository.findAllbyPosting(posting);
 
@@ -79,23 +74,26 @@ public class CommentServiceImpl implements CommentService{
         }
 
         //List<Comment> -> List<CommentListDto.CommentResponse>작업
-        List<CommentListDto.CommentResponse> commentResponses = new ArrayList<>();
+        List<CommentListResponseDto.CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : comments) {
-            User user = comment.getUser();
+            User user = userRepository.getById(req.getUser_id());
             Optional<Likes> foundLikes = likesRepository.findByUserAndComment(user, comment);
+            Optional<Dislikes> foundDislikes = dislikesRepository.findByUserAndComment(user, comment);
 
-            commentResponses.add(CommentListDto.CommentResponse.builder()
+            commentResponses.add(CommentListResponseDto.CommentResponse.builder()
                     .nickname(user.getNickname())
                     .createdAt(comment.localDateTimeToString())
                     .content(comment.getContent())
-                    .liked(foundLikes.isEmpty()? true : false)
+                    .liked(foundLikes.isEmpty()? false : true)
+                    .disliked(foundDislikes.isEmpty()? false : true)
                     .likeCount(comment.getLikeCount())
+                    .dislikeCount(comment.getDislikeCount())
                     .build());
         }
 
         //사용자에게 반환하기 위한 최종 데이터
-        CommentListDto.SearchCommentRes searchCommentRes = new CommentListDto.SearchCommentRes(commentResponses);
-        CustomAPIResponse<CommentListDto.SearchCommentRes> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), searchCommentRes, "댓글 조회가 완료되었습니다.");
+        CommentListResponseDto.SearchCommentRes searchCommentRes = new CommentListResponseDto.SearchCommentRes(commentResponses);
+        CustomAPIResponse<CommentListResponseDto.SearchCommentRes> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), searchCommentRes, "댓글 조회가 완료되었습니다.");
 
         //성공2. 댓글이 존재하는 경우 : 200
         return ResponseEntity

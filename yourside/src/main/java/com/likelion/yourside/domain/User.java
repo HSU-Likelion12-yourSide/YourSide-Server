@@ -34,6 +34,7 @@ public class User extends BaseEntity {
     // Method
     public void changeIsExpert() {
         this.isExpert = true;
+        this.tier = 2;
     }
     public void addDeleteComments() {
         this.deleteComments = (this.deleteComments == null) ? 1 : this.deleteComments + 1;
@@ -44,10 +45,22 @@ public class User extends BaseEntity {
     public void resetDeleteComments() {
         this.deleteComments = 0;
     }
-    public void increaseTotalPostings() { this.totalPostings += 1; }
-    public void increaseTotalLikes() { this.totalLikes += 1; }
+    public void increaseTotalPostings() {
+        this.totalPostings += 1;
+        checkTier();
+    }
+    public void increaseTotalLikes() {
+        this.totalLikes += 1;
+        checkTier();
+    }
     public void decreaseTotalLikes() { this.totalLikes -= 1; }
-    public void increaseTotalComments() { this.totalComments += 1; }
+    public void increaseTotalComments() {
+        this.totalComments += 1;
+        checkTier();
+    }
+    private void checkTier() {
+        if(totalComments >= 500 && totalPostings >= 30 && totalLikes >= 300) this.tier = 1;
+    }
 
     public void addDummy(boolean isExpert, Long totalComments, Long totalLikes, Long totalPostings, int deleteComments, int tier) {
         this.isExpert = isExpert;

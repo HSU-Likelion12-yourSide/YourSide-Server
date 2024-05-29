@@ -77,4 +77,18 @@ public class NotationServiceImpl implements NotationService{
         CustomAPIResponse<NotationDto.NotationResponse> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), notationResponse, "공지사항 조회 성공");
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+
+
+    @Override
+    public ResponseEntity<CustomAPIResponse<?>> create(NotationDto.NotationResponse notationDto) {
+        Notation notation = Notation.builder()
+                .title(notationDto.getTitle())
+                .content(notationDto.getContent())
+                .isPinned(notationDto.isPinned())
+                .build();
+        notationRepository.save(notation);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(CustomAPIResponse.createSuccess(HttpStatus.CREATED.value(), notation, "Success"));
+    }
 }
