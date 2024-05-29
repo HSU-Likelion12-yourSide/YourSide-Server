@@ -23,7 +23,6 @@ import java.util.Spliterator;
 
 @Service
 @RequiredArgsConstructor
-@Builder
 public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
