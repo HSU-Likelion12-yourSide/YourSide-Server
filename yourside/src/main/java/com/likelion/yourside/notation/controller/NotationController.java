@@ -1,12 +1,10 @@
 package com.likelion.yourside.notation.controller;
+import com.likelion.yourside.notation.dto.NotationDto;
 import com.likelion.yourside.notation.service.NotationService;
 import com.likelion.yourside.util.response.CustomAPIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/notation")
@@ -30,4 +28,9 @@ public class NotationController {
         return result;
     }
 
+    //---------------------------------------------------------------------------------------------------
+    @PostMapping
+    public ResponseEntity<CustomAPIResponse<?>> create(@RequestBody NotationDto.NotationResponse notationDto) {
+        return notationService.create(notationDto);
+    }
 }
