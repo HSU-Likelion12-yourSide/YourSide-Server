@@ -40,6 +40,31 @@ public class PostingServiceImpl implements PostingService{
                     .body(responseBody);
         }
         User user = foundUser.get();
+
+        //근로 결과지를 선택하지 않은 경우
+        if (postingCreateResponseDto.getWorksheetId() == null) {
+            Posting posting = Posting.builder()
+                    .title(postingCreateResponseDto.getTitle())
+                    .content(postingCreateResponseDto.getContent())
+                    .bookmarkCount(0)
+                    .user(user)
+                    .worksheet(null)
+                    .type(postingCreateResponseDto.getType())
+                    .build();
+            postingRepository.save(posting);
+            // 4. User 게시글 Count 증가
+            user.increaseTotalPostings();
+            userRepository.save(user);
+            // 5. 응답
+            // 5-1. data
+            // 5-2. responseBody
+            CustomAPIResponse<Object> responseBody = CustomAPIResponse.createSuccessWithoutData(HttpStatus.CREATED.value(), "게시글이 등록되었습니다.");
+            // 5-3. ResponseEntity
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(responseBody);
+        }
+
         // 2. 선택한 근로 결과지 존재 여부 확인
         Optional<Worksheet> foundWorksheet = worksheetRepository.findById(postingCreateResponseDto.getWorksheetId());
         if (foundWorksheet.isEmpty()) {
