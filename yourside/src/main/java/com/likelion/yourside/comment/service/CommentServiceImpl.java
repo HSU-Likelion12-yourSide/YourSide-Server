@@ -7,7 +7,6 @@ import com.likelion.yourside.likes.repository.LikesRepository;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,14 +62,6 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getAllComment(CommentListRequestDto.Req req) {
         Optional<Posting> optionalPosting = postingRepository.findById(req.getPosting_id());
-        Posting posting = optionalPosting.get();
-        List<Comment> comments = commentRepository.findAllbyPosting(posting);
-
-        //성공1. 댓글 존재하지 않는 경우 : 200
-        if (comments.isEmpty()) {
-            CustomAPIResponse<?> res = CustomAPIResponse.createFailWithoutData(HttpStatus.OK.value(), "작성한 댓글이 없습니다.");
-            return ResponseEntity.ok(res);
-        }
 
         //해당 게시글이 없는 경우 : 404
         if (optionalPosting.isEmpty()) {
@@ -78,6 +69,17 @@ public class CommentServiceImpl implements CommentService{
                     .status(HttpStatus.NOT_FOUND)
                     .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "게시글이 존재하지 않습니다."));
         }
+
+        Posting posting = optionalPosting.get();
+        List<Comment> comments = commentRepository.findAllByPosting(posting);
+
+        //성공1. 댓글 존재하지 않는 경우 : 200
+        if (comments.isEmpty()) {
+            CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "작성한 댓글이 없습니다.");
+            return ResponseEntity.ok(res);
+        }
+
+
 
         //List<Comment> -> List<CommentListDto.CommentResponse>작업
         List<CommentListResponseDto.CommentResponse> commentResponses = new ArrayList<>();

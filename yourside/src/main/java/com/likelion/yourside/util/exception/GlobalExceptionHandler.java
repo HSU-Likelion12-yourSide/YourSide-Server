@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CustomAPIResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         // 반환타입은 기존의 응답과 동일하게 처리하기 위해 ResponseEntity<CustomAPIResponse>로 작성한다.
 
-        // 발생핞 에러로부터 에러메시지를 얻어온다.
+        // 발생한 에러로부터 에러메시지를 얻어온다.
         String errorMessage = e.getBindingResult().getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining("; "));
