@@ -6,10 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="83232a9c-f4f5-4586-9e13-ed2262d8c9df" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/posting/controller/PostingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/posting/controller/PostingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/posting/dto/PostingListDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/posting/dto/PostingListDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/posting/repository/PostingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/posting/repository/PostingRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/posting/service/PostingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/posting/service/PostingServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/dto/CommentCreateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/dto/CommentCreateDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/dto/CommentListRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/dto/CommentListRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/service/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/comment/service/CommentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/dto/NotationDetailDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/dto/NotationDetailDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/user/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/user/repository/UserRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
