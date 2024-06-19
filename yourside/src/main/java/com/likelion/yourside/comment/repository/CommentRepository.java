@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("select c from Comment c where c.posting = :posting")
-    List<Comment> findAllbyPosting(Posting posting);
+    List<Comment> findAllByPosting(Posting posting);
 
     @Query("select c from Comment c where c.user = :user")
     List<Comment> findAllByUser(User user);

@@ -17,7 +17,7 @@ public class PostingController {
     //게시글 전체 조회
     @GetMapping("/list/{type}")
     public ResponseEntity<CustomAPIResponse<?>> getAllPosting(
-            @PathVariable int type
+            @PathVariable("type") int type
     ) {
         return postingService.getAllPosting(type);
     }
@@ -25,15 +25,15 @@ public class PostingController {
     //인기 게시글 조회 (상위 3개)
     @GetMapping("/list/popular/{type}")
     public ResponseEntity<CustomAPIResponse<?>> getPopularPosting(
-            @PathVariable int type) {
+            @PathVariable("type") int type) {
         return postingService.getPopularPosting(type);
     }
 
     //게시글 세부 조회
     @GetMapping("/{posting_id}")
     public ResponseEntity<CustomAPIResponse<?>> getPosting(
-            @PathVariable Long posting_id) {
-        return postingService.getOnePosting(posting_id);
+            @PathVariable("posting_id") Long postingId) {
+        return postingService.getOnePosting(postingId);
     }
 
     //게시글 등록

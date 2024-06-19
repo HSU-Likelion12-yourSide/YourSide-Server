@@ -1,8 +1,7 @@
 package com.likelion.yourside.posting.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-
-import java.util.List;
 
 
 public class PostingListDto {
@@ -13,18 +12,9 @@ public class PostingListDto {
     public static class PostingResponse {
         private String title;
         private String content;
-        private String created_at;
-        private int bookmark_count;
+        @JsonProperty("created_at")
+        private String createdAt;
+        @JsonProperty("bookmark_count")
+        private int bookmarkCount;
     }
-
-/*    //게시글 조회
-    @Getter @Setter
-    @Builder
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class SearchPostings{
-        private List<PostingResponse> postings;
-        public SearchPostings(List<PostingResponse> postings){
-            this.postings = postings;
-        }
-    }*/
 }

@@ -138,7 +138,7 @@ public class MypageServiceImpl implements MypageService{
         // 2. 응답
         // 2-1. data
         User user = foundUser.get();
-        List<Posting> postingList = postingRepository.findALlByUser(user);
+        List<Posting> postingList = postingRepository.findAllByUser(user);
         List<MypageGetpostinglistResponseDto> data = new ArrayList<>();
         for (Posting posting : postingList) {
             MypageGetpostinglistResponseDto responseDto = MypageGetpostinglistResponseDto.builder()

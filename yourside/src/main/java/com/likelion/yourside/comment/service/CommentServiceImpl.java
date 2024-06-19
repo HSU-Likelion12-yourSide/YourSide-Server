@@ -7,7 +7,6 @@ import com.likelion.yourside.likes.repository.LikesRepository;
 import com.likelion.yourside.posting.repository.PostingRepository;
 import com.likelion.yourside.user.repository.UserRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,9 @@ public class CommentServiceImpl implements CommentService{
     //댓글 작성 -------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public ResponseEntity<CustomAPIResponse<?>> createComment(CommentCreateDto.Req req) {
-        Optional<User> optionalUser = userRepository.findById(req.getUser_id());
+
+        //해당 회원이 없는 경우 : 404
+        Optional<User> optionalUser = userRepository.findById(req.getUserId());
         if (optionalUser.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -36,7 +37,7 @@ public class CommentServiceImpl implements CommentService{
         }
         User user = optionalUser.get();
 
-        Optional<Posting> optionalPosting = postingRepository.findById(req.getPosting_id());
+        Optional<Posting> optionalPosting = postingRepository.findById(req.getPostingId());
         //해당 게시글이 없는 경우 : 404
         if (optionalPosting.isEmpty()) {
             return ResponseEntity
@@ -58,19 +59,10 @@ public class CommentServiceImpl implements CommentService{
         return ResponseEntity.ok(res);
     }
 
-
     //댓글 전체 조회 ---------------------------------------------------------------------------------------------------------------------------------
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getAllComment(CommentListRequestDto.Req req) {
-        Optional<Posting> optionalPosting = postingRepository.findById(req.getPosting_id());
-        Posting posting = optionalPosting.get();
-        List<Comment> comments = commentRepository.findAllbyPosting(posting);
-
-        //성공1. 댓글 존재하지 않는 경우 : 200
-        if (comments.isEmpty()) {
-            CustomAPIResponse<?> res = CustomAPIResponse.createFailWithoutData(HttpStatus.OK.value(), "작성한 댓글이 없습니다.");
-            return ResponseEntity.ok(res);
-        }
+        Optional<Posting> optionalPosting = postingRepository.findById(req.getPostingId());
 
         //해당 게시글이 없는 경우 : 404
         if (optionalPosting.isEmpty()) {
@@ -79,10 +71,28 @@ public class CommentServiceImpl implements CommentService{
                     .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "게시글이 존재하지 않습니다."));
         }
 
+        Posting posting = optionalPosting.get();
+        List<Comment> comments = commentRepository.findAllByPosting(posting);
+
+        //댓글이 존재하지 않는 경우 : 200
+        if (comments.isEmpty()) {
+            CustomAPIResponse<?> res = CustomAPIResponse.createSuccessWithoutData(HttpStatus.OK.value(), "작성한 댓글이 없습니다.");
+            return ResponseEntity.ok(res);
+        }
+
+        //(댓글을 조회한)해당 회원이 없는 경우 : 404
+        Optional<User> optionalUser = userRepository.findById(req.getUserId());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(CustomAPIResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), "해당 회원을 찾을 수 없습니다."));
+        }
+        User user = optionalUser.get();
+
         //List<Comment> -> List<CommentListDto.CommentResponse>작업
         List<CommentListResponseDto.CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : comments) {
-            User user = userRepository.getById(req.getUser_id());
+
             Optional<Likes> foundLikes = likesRepository.findByUserAndComment(user, comment);
             Optional<Dislikes> foundDislikes = dislikesRepository.findByUserAndComment(user, comment);
 
@@ -90,8 +100,8 @@ public class CommentServiceImpl implements CommentService{
                     .nickname(user.getNickname())
                     .createdAt(comment.localDateTimeToString())
                     .content(comment.getContent())
-                    .liked(foundLikes.isEmpty()? false : true)
-                    .disliked(foundDislikes.isEmpty()? false : true)
+                    .liked(foundLikes.isPresent())
+                    .disliked(foundDislikes.isPresent())
                     .likeCount(comment.getLikeCount())
                     .dislikeCount(comment.getDislikeCount())
                     .build());
