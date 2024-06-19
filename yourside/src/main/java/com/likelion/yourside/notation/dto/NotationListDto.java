@@ -27,7 +27,6 @@ public class NotationListDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class SearchNotations{
         private List<NotationResponse> notations;
-
         public SearchNotations(List<NotationResponse> notations){
             this.notations = notations;
         }

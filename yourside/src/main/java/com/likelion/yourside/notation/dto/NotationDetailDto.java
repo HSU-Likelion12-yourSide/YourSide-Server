@@ -2,11 +2,10 @@ package com.likelion.yourside.notation.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 //특정 게시글 조회 응답 DTO
-public class NotationDto {
+public class NotationDetailDto {
 
     @Getter
     @Builder

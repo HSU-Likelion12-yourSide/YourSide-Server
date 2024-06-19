@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="83232a9c-f4f5-4586-9e13-ed2262d8c9df" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/controller/NotationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/controller/NotationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/dto/NotationDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/dto/NotationDetailDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/dto/NotationListDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/dto/NotationListDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/service/NotationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/service/NotationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/service/NotationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/yourside/src/main/java/com/likelion/yourside/notation/service/NotationServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +64,7 @@
     "Gradle.yourside [:YoursideApplication.main()].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "refactoring/125",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/user/Documents/LikeLion/deploy-repo",
     "애플리케이션.YoursideApplication.executor": "Run"

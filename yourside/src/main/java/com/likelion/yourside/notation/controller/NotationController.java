@@ -1,5 +1,5 @@
 package com.likelion.yourside.notation.controller;
-import com.likelion.yourside.notation.dto.NotationDto;
+import com.likelion.yourside.notation.dto.NotationDetailDto;
 import com.likelion.yourside.notation.service.NotationService;
 import com.likelion.yourside.util.response.CustomAPIResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,21 +16,19 @@ public class NotationController {
     //공지사항 전체 조회
     @GetMapping("/list")
     public ResponseEntity<CustomAPIResponse<?>> getAllNotation(){
-            ResponseEntity<CustomAPIResponse<?>> result = notationService.getAllNotation();
-        return result;
+        return notationService.getAllNotation();
     }
 
     //공지사항 한 개 조회
     @GetMapping("/{notation_id}")
     public ResponseEntity<CustomAPIResponse<?>> getOneNotation(
             @PathVariable("notation_id") Long notationId){
-        ResponseEntity<CustomAPIResponse<?>> result = notationService.getOneNotation(notationId);
-        return result;
+        return notationService.getOneNotation(notationId);
     }
 
     //---------------------------------------------------------------------------------------------------
     @PostMapping
-    public ResponseEntity<CustomAPIResponse<?>> create(@RequestBody NotationDto.NotationResponse notationDto) {
+    public ResponseEntity<CustomAPIResponse<?>> create(@RequestBody NotationDetailDto.NotationResponse notationDto) {
         return notationService.create(notationDto);
     }
 }

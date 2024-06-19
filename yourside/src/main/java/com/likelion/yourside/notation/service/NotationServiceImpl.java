@@ -1,11 +1,10 @@
 package com.likelion.yourside.notation.service;
 
 import com.likelion.yourside.domain.Notation;
-import com.likelion.yourside.notation.dto.NotationDto;
+import com.likelion.yourside.notation.dto.NotationDetailDto;
 import com.likelion.yourside.notation.dto.NotationListDto;
 import com.likelion.yourside.notation.repository.NotationRepository;
 import com.likelion.yourside.util.response.CustomAPIResponse;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +45,7 @@ public class NotationServiceImpl implements NotationService{
         }
 
         //최종 데이터
-        NotationListDto.SearchNotations searchNotations = new NotationListDto.SearchNotations(notationResponses);
+        NotationListDto.SearchNotations searchNotations = new NotationListDto.SearchNotations(notationResponses); //searchNotations 객체는 공지사항 목록을 클라이언트에게 일관된 형식으로 전송하기 위해 사용. 유지보수에도 좋을 것이라 생각
         CustomAPIResponse<NotationListDto.SearchNotations> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), searchNotations, "공지사항 조회 성공");
         return ResponseEntity.status(HttpStatus.OK).body(res);
 
@@ -67,20 +66,20 @@ public class NotationServiceImpl implements NotationService{
 
         //정상적으로 조회가 된 경우
         Notation notation = optionalNotation.get();
-        NotationDto.NotationResponse notationResponse = new NotationDto.NotationResponse(
+        NotationDetailDto.NotationResponse notationResponse = new NotationDetailDto.NotationResponse(
                 notation.getTitle(),
                 notation.getContent(),
                 notation.localDateTimeToString(),
                 notation.isPinned()
         );
 
-        CustomAPIResponse<NotationDto.NotationResponse> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), notationResponse, "공지사항 조회 성공");
+        CustomAPIResponse<NotationDetailDto.NotationResponse> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), notationResponse, "공지사항 조회 성공");
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
 
     @Override
-    public ResponseEntity<CustomAPIResponse<?>> create(NotationDto.NotationResponse notationDto) {
+    public ResponseEntity<CustomAPIResponse<?>> create(NotationDetailDto.NotationResponse notationDto) {
         Notation notation = Notation.builder()
                 .title(notationDto.getTitle())
                 .content(notationDto.getContent())
