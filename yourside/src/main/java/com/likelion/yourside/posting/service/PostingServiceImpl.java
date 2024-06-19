@@ -209,8 +209,8 @@ public class PostingServiceImpl implements PostingService{
             postingListResponseDtos.add(PostingListDto.PostingResponse.builder()
                             .title(posting.getTitle())
                             .content(posting.getContent())
-                            .created_at(posting.localDateTimeToString())
-                            .bookmark_count(posting.getBookmarkCount())
+                            .createdAt(posting.localDateTimeToString())
+                            .bookmarkCount(posting.getBookmarkCount())
                     .build());
         }
 
@@ -222,7 +222,7 @@ public class PostingServiceImpl implements PostingService{
     //인기 게시글 조회 (상위 3개) ----------------------------------------------------------------------------------
     @Override
     public ResponseEntity<CustomAPIResponse<?>> getPopularPosting(int type) {
-        List<Posting> postings = postingRepository.findAllByType(type);
+        List<Posting> postings = postingRepository.findTopThreeByType(type);
 
         //게시글이 존재하지 않는 경우
         if (postings.isEmpty()) {
@@ -231,7 +231,7 @@ public class PostingServiceImpl implements PostingService{
                     .body(CustomAPIResponse.createFailWithoutData(HttpStatus.OK.value(), "게시글이 존재하지 않습니다."));
         }
 
-        //sorting : bookmarks 기준으로
+        /*//sorting : bookmarks 기준으로
         List<Posting> top3Postings = new ArrayList<>(postings);
         Collections.sort(top3Postings, new Comparator<Posting>() {
             @Override
@@ -241,11 +241,11 @@ public class PostingServiceImpl implements PostingService{
         });
         if (top3Postings.size() > 3) {
             top3Postings = top3Postings.subList(0, 3);
-        }
+        }*/
 
         //반환
         List<PostingPopularListDto.PostingResponse> popularListResponseDto = new ArrayList<>();
-        for (Posting posting : top3Postings) {
+        for (Posting posting : postings) {
             popularListResponseDto.add(PostingPopularListDto.PostingResponse.builder()
                     .title(posting.getTitle())
                     .content(posting.getContent())
@@ -274,7 +274,7 @@ public class PostingServiceImpl implements PostingService{
         Optional<Bookmark> optionalBookmark = bookmarkRepository.findByUserAndPosting(posting.getUser(), posting);
         boolean isBookmarked = optionalBookmark.isPresent();
 
-        PostingSearchResponseDto postingSearchResponseDto = PostingSearchResponseDto.builder()
+        PostingDetailResponseDto postingSearchResponseDto = PostingDetailResponseDto.builder()
                 .title(posting.getTitle())
                 .nickname(posting.getUser().getNickname())
                 .createdAt(posting.localDateTimeToString())
@@ -283,7 +283,7 @@ public class PostingServiceImpl implements PostingService{
                 .worksheetId(posting.getWorksheet().getId())
                 .build();
         //200 : 게시글 조회 성공
-        CustomAPIResponse<PostingSearchResponseDto> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), postingSearchResponseDto, "게시글 조회에 성공했습니다.");
+        CustomAPIResponse<PostingDetailResponseDto> res = CustomAPIResponse.createSuccess(HttpStatus.OK.value(), postingSearchResponseDto, "게시글 조회에 성공했습니다.");
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }

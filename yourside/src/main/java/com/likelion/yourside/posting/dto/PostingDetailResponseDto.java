@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostingSearchResponseDto {
+public class PostingDetailResponseDto {
     private String title;
     private String nickname;
     @JsonProperty("created_at")

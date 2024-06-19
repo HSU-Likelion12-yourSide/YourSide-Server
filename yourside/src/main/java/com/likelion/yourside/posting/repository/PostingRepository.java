@@ -13,6 +13,11 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
     @Query("select p from Posting p where p.user = :user")
     List<Posting> findAllByUser(User user);
 
+    //전체 게시글 조회
     @Query("select p from Posting p where p.type = :type")
     List<Posting> findAllByType(int type);
+
+    //타입별 인기 게시글 상위 3개 조회
+    @Query(value = "SELECT * FROM POSTING p WHERE p.TYPE = :type ORDER BY p.bookmark_count DESC LIMIT 3", nativeQuery = true)
+    List<Posting> findTopThreeByType(int type);
 }
