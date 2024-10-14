@@ -207,6 +207,7 @@ public class PostingServiceImpl implements PostingService{
         List<PostingListDto.PostingResponse> postingListResponseDtos = new ArrayList<>();
         for (Posting posting : postings) {
             postingListResponseDtos.add(PostingListDto.PostingResponse.builder()
+                            .id(posting.getId())
                             .title(posting.getTitle())
                             .content(posting.getContent())
                             .createdAt(posting.localDateTimeToString())
