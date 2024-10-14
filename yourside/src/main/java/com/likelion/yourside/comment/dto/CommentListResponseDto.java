@@ -11,6 +11,7 @@ public class CommentListResponseDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class CommentResponse {
+        private Long id;
         private String nickname;
         @JsonProperty("created_at")
         private String createdAt;

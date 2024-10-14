@@ -10,6 +10,7 @@ public class PostingListDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class PostingResponse {
+        private Long id;
         private String title;
         private String content;
         @JsonProperty("created_at")

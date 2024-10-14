@@ -97,6 +97,7 @@ public class CommentServiceImpl implements CommentService{
             Optional<Dislikes> foundDislikes = dislikesRepository.findByUserAndComment(user, comment);
 
             commentResponses.add(CommentListResponseDto.CommentResponse.builder()
+                    .id(comment.getId())
                     .nickname(user.getNickname())
                     .createdAt(comment.localDateTimeToString())
                     .content(comment.getContent())
