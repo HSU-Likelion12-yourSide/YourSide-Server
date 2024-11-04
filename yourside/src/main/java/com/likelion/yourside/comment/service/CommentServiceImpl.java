@@ -61,8 +61,8 @@ public class CommentServiceImpl implements CommentService{
 
     //댓글 전체 조회 ---------------------------------------------------------------------------------------------------------------------------------
     @Override
-    public ResponseEntity<CustomAPIResponse<?>> getAllComment(CommentListRequestDto.Req req) {
-        Optional<Posting> optionalPosting = postingRepository.findById(req.getPostingId());
+    public ResponseEntity<CustomAPIResponse<?>> getAllComment(Long userId, Long postingId) {
+        Optional<Posting> optionalPosting = postingRepository.findById(postingId);
 
         //해당 게시글이 없는 경우 : 404
         if (optionalPosting.isEmpty()) {
@@ -81,7 +81,7 @@ public class CommentServiceImpl implements CommentService{
         }
 
         //(댓글을 조회한)해당 회원이 없는 경우 : 404
-        Optional<User> optionalUser = userRepository.findById(req.getUserId());
+        Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)

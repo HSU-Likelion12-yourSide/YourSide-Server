@@ -3,7 +3,6 @@ package com.likelion.yourside.comment.controller;
 import com.likelion.yourside.comment.dto.CommentCreateDto;
 import com.likelion.yourside.comment.dto.CommentDislikeDto;
 import com.likelion.yourside.comment.dto.CommentLikeDto;
-import com.likelion.yourside.comment.dto.CommentListRequestDto;
 import com.likelion.yourside.comment.service.CommentService;
 import com.likelion.yourside.util.response.CustomAPIResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +30,9 @@ public class CommentController {
     //댓글 전체 조회
     @GetMapping("/list")
     public ResponseEntity<CustomAPIResponse<?>> getAllComment(
-            @RequestBody CommentListRequestDto.Req req)  {
-        ResponseEntity<CustomAPIResponse<?>> result = commentService.getAllComment(req);
+            @RequestParam("user_id") Long userId,
+            @RequestParam("posting_id") Long postingId)  {
+        ResponseEntity<CustomAPIResponse<?>> result = commentService.getAllComment(userId, postingId);
         return result;
     }
 
