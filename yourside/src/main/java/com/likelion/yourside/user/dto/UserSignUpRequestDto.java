@@ -1,5 +1,6 @@
 package com.likelion.yourside.user.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,11 +8,14 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 public class UserSignUpRequestDto {
-    // 유효성 검사 추가 해야하면 넣기.
+    @NotBlank
     private String username;
+    @NotBlank
     private String password;
+    @NotBlank
     private String email;
+    @NotBlank
     private String name;
+    @NotBlank
     private String nickname;
-
 }
