@@ -18,6 +18,6 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
     List<Posting> findAllByType(int type);
 
     //타입별 인기 게시글 상위 3개 조회
-    @Query(value = "SELECT * FROM POSTING p WHERE p.TYPE = :type ORDER BY p.bookmark_count DESC LIMIT 3", nativeQuery = true)
+    @Query(value = "SELECT * FROM posting p WHERE p.TYPE = :type ORDER BY p.bookmark_count DESC LIMIT 3", nativeQuery = true)
     List<Posting> findTopThreeByType(int type);
 }
